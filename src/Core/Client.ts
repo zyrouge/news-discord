@@ -4,6 +4,7 @@ import { $Event } from "./Event";
 import { NewsManager } from "./News";
 import { DatabaseManager } from "./Database";
 import { Logger, Permissions } from "./Utils";
+import { CronJobs } from "./Utils/CronJobs";
 import { promises as fs } from "fs";
 import path from "path";
 
@@ -52,6 +53,7 @@ export class Client {
     Database: DatabaseManager;
     Utils: ClientUtils;
     NewsManager: NewsManager;
+    CronJobs: CronJobs;
 
     constructor(token: string, options: ClientOptions) {
         this.bot = new Eris.Client(token, options?.eris);
@@ -75,6 +77,7 @@ export class Client {
         );
 
         this.Utils = new ClientUtils(this);
+        this.CronJobs = new CronJobs(this, 5);
     }
 
     async initialize() {
@@ -108,6 +111,7 @@ export class Client {
         await this.bot.connect();
         await this.Database.connect();
         await this.NewsManager.Bing.headlines();
+        await this.CronJobs.start();
         return;
     }
 

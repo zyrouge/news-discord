@@ -206,15 +206,15 @@ export class BingManager {
         date
     }: BingNews) {
         const model: NewsAttributes = {
-            id,
-            title,
-            url,
-            description,
-            image,
-            sourceName,
-            sourceImage,
-            time,
-            date
+            id: id,
+            title: title,
+            url: url,
+            description: description || null,
+            image: image || null,
+            sourceName: sourceName || null,
+            sourceImage: sourceImage || null,
+            time: time || null,
+            date: date || null
         };
         return model;
     }

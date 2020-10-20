@@ -2,10 +2,10 @@ import { Sequelize, Model, Optional, DataTypes } from "sequelize";
 
 export interface GuildAttributes {
     guildID: string;
-    prefix?: string;
-    autoNewsChannel: string;
-    bindToChannel: string;
-    allowOutsideBound: boolean;
+    prefix?: string | null;
+    autoNewsChannel?: string | null;
+    bindToChannel?: string | null;
+    allowOutsideBound?: boolean | null;
 }
 
 export interface GuildCreationAttributes
@@ -22,9 +22,22 @@ export function GuildFactory(sequelize: Sequelize) {
             allowNull: false,
             unique: true
         },
-        prefix: DataTypes.STRING,
-        autoNewsChannel: DataTypes.STRING,
-        bindToChannel: DataTypes.STRING,
-        allowOutsideBound: DataTypes.BOOLEAN
+        prefix: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        autoNewsChannel: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        bindToChannel: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        allowOutsideBound: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
+        }
     });
 }

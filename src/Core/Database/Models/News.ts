@@ -4,12 +4,12 @@ export interface NewsAttributes {
     id: string;
     title: string;
     url: string;
-    description?: string;
-    image?: string;
-    sourceName?: string;
-    sourceImage?: string;
-    time?: number;
-    date?: string;
+    description?: string | null;
+    image?: string | null;
+    sourceName?: string | null;
+    sourceImage?: string | null;
+    time?: number | null;
+    date?: string | null;
 }
 
 export interface NewsCreationAttributes
@@ -23,7 +23,8 @@ export function NewsFactory(sequelize: Sequelize) {
         id: {
             type: DataTypes.STRING,
             primaryKey: true,
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         title: DataTypes.STRING,
         url: DataTypes.STRING,
