@@ -1,0 +1,8 @@
+node_modules
+package-lock.json
+.env.*
+/build
+/database
+/logs
+.vscode
+.prettierrc
