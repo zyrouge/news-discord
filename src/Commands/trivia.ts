@@ -96,16 +96,16 @@ export const execute: NewsCore.CommandExecute = async (
         const average = Math.floor((correct / total) * 10);
         const grade =
             average > 8
-                ? "**A** Exceptional"
+                ? "`A` Exceptional"
                 : average > 7
-                ? "**B** Very Good"
+                ? "`B` Very Good"
                 : average > 6
-                ? "**C** Good"
+                ? "`C` Good"
                 : average > 5
-                ? "**D** Average"
+                ? "`D` Average"
                 : average > 2
-                ? "**E** Poor"
-                : "**F** Worse";
+                ? "`E` Poor"
+                : "`F` Worse";
 
         const embed: Eris.EmbedOptions = {
             author: {
