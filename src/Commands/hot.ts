@@ -3,7 +3,7 @@ import * as NewsCore from "../Core";
 
 export const config: NewsCore.CommandConfig = {
     name: "hot",
-    aliases: ["latest", "headlines"],
+    aliases: ["news", "latest", "headlines"],
     description: "Latest News",
     usage: "[number]",
     example: ["", "3"],

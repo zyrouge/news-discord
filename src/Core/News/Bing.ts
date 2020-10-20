@@ -64,7 +64,11 @@ export class BingManager {
         const startTime = Date.now();
         Logger.log("Updating Bing Headlines...");
 
-        const DOM = await JSDOM.fromURL(Constants.bing.base);
+        const ep =
+            '/search?q=World&nvaug=[NewsVertical+Category="rt_World"]&FORM=NSBABR';
+        const DOM = await JSDOM.fromURL(
+            Constants.bing.base + encodeURIComponent(ep)
+        );
         const headlines = DOM.window.document.querySelectorAll(
             ".news-card.news-headlines-card.news-headlines-card-normal"
         );
@@ -151,6 +155,11 @@ export class BingManager {
         const sourceAnchor = sourceDiv?.querySelector("a") || undefined;
         const sourceAnchorURL = sourceAnchor?.href || undefined;
         const sourceImage = sourceDiv?.querySelector("img")?.src || undefined;
+        const timeAgo = sourceDiv?.lastChild?.textContent;
+        const timeParsed = timeAgo ? parse(timeAgo) : undefined;
+        const time = timeParsed
+            ? DayJS().subtract(timeParsed, "ms")
+            : undefined;
 
         return {
             id: url,
@@ -164,7 +173,9 @@ export class BingManager {
                     ? Constants.bing.url + sourceImage
                     : undefined,
                 url: sourceAnchorURL || undefined
-            }
+            },
+            time: time?.valueOf(),
+            date: time?.format("YYYY-MM-DD")
         } as BingNews;
     }
 
@@ -189,9 +200,10 @@ export class BingManager {
                 url: news.image
             },
             footer: {
-                text: news.source.name,
+                text: `Source: ${news.source.name}`,
                 icon_url: news.source.image
-            }
+            },
+            timestamp: news.time ? new Date(news.time) : undefined
         } as Eris.EmbedOptions;
     }
 

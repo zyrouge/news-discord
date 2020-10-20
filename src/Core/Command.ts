@@ -3,17 +3,22 @@ import { Collection } from "./Collection";
 import path from "path";
 import { promises as fs } from "fs";
 import Eris from "eris";
+import { Colors } from "./Utils/Colors";
 import { GuildModel } from "./Database/Models/Guild";
 
-export type CommandAvailability = "Guild" | "DM" | "Any";
+export type CommandAvailability = "Guild" | "DM" | "Guild NSFW" | "Any";
+
+interface PermJSON {
+    [s: string]: boolean;
+}
 
 export interface CommandConfig {
     name: string;
     aliases?: string[];
     description: string;
     permissions?: {
-        user?: string[];
-        bot?: string[];
+        user?: PermJSON;
+        bot?: PermJSON;
     };
     usage: string;
     example: string[];
@@ -34,6 +39,7 @@ export interface CommandArguments {
     type: CommandAvailability;
     guild?: Eris.Guild;
     guildDB?: GuildModel;
+    prefix: string;
 }
 
 export type CommandExecute = (
@@ -185,7 +191,8 @@ export class CommandHandler {
         const cmdArgs: CommandArguments = {
             message,
             args,
-            type: "Any"
+            type: "Any",
+            prefix
         };
 
         if (command.config.available === "DM") {
@@ -194,9 +201,14 @@ export class CommandHandler {
             cmdArgs.type = "DM";
         }
 
-        const guild = message.guildID
-            ? this.News.bot.guilds.get(message.guildID)
-            : undefined;
+        if (command.config.available === "Guild NSFW") {
+            if (!("nsfw" in message.channel) || message.channel.nsfw !== true)
+                return false;
+            cmdArgs.type = "Guild NSFW";
+        }
+
+        const guild =
+            "guild" in message.channel ? message.channel.guild : undefined;
         if (command.config.available === "Guild") {
             if (!guild) return false;
             cmdArgs.type = "Guild";
@@ -227,7 +239,7 @@ export class CommandHandler {
             description.push(
                 `**Aliases:** ${cmd.config.aliases
                     .map((a) => `\`${a}\``)
-                    .join(" ")}`
+                    .join(", ")}`
             );
 
         description.push(`**Category:** ${cmd.config.category}`);
@@ -236,6 +248,14 @@ export class CommandHandler {
             description.push(`**Cooldown:** ${cmd.config.cooldown}s`);
 
         description.push(`**Availability:** ${cmd.config.available}`);
+
+        const subcommands = [...cmd.subcommands.values()];
+        if (subcommands.length)
+            description.push(
+                `**Subcommands:** ${subcommands
+                    .map((s) => `\`${s.config.name}\``)
+                    .join(", ")}`
+            );
 
         const cmdFullName =
             this.News.options.config.prefix + (cmd.fullName || cmd.config.name);
@@ -258,6 +278,7 @@ export class CommandHandler {
         return {
             title: `Command: ${cmd.config.name.toProperCase()}`,
             description: description.join("\n"),
+            color: Colors.blurple.num,
             fields
         } as Eris.EmbedOptions;
     }

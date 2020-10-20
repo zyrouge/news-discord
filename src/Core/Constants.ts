@@ -11,6 +11,14 @@ export const Constants = {
     reddit: {
         base: "https://api.reddit.com"
     },
+    urban: {
+        base: "https://api.urbandictionary.com/v0",
+        search: "https://api.urbandictionary.com/v0/define?term="
+    },
+    trivia: {
+        base: "https://opentdb.com",
+        api: "https://opentdb.com/api.php?amount="
+    },
     keywords: {
         remove: ["none", "remove", "rm", "disable"]
     }

@@ -26,7 +26,18 @@ const config: NewsCore.Config = yaml.parse(
 const News = new NewsCore.Client(process.env.DISCORD_TOKEN, {
     commands: __dirname + "/Commands",
     events: __dirname + "/Events",
-    config
+    config,
+    eris: {
+        defaultImageFormat: "png",
+        defaultImageSize: 1024,
+        disableEvents: {
+            TYPING_START: false
+        },
+        maxShards: "auto",
+        allowedMentions: {
+            everyone: false
+        }
+    }
 });
 
 const init = async () => {

@@ -1,6 +1,8 @@
 import { Client } from "../Client";
 import { Logger } from "../Utils/Logger";
 
+export let JobsCount = 0;
+
 export class CronJobs {
     News: Client;
     Interval?: NodeJS.Timeout;
@@ -18,7 +20,7 @@ export class CronJobs {
                 let mod = this.News.NewsManager.Bing.getModel(art);
                 await this.News.Database.News.findOrCreate({
                     where: mod
-                });
+                }).catch(() => {});
             }
         }
     }
@@ -35,6 +37,9 @@ export class CronJobs {
     async run() {
         const started = Date.now();
         await this.saveBingNewsToDatabase();
-        Logger.log(`Completed CronJobs in ${Date.now() - started}ms`);
+        JobsCount = JobsCount + 1;
+        Logger.log(
+            `Completed CronJobs (#${JobsCount}) in ${Date.now() - started}ms`
+        );
     }
 }

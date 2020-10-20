@@ -1,3 +1,4 @@
+import Eris from "eris";
 import * as NewsCore from "../Core";
 
 export const config: NewsCore.CommandConfig = {
@@ -31,7 +32,33 @@ export const execute: NewsCore.CommandExecute = async (
 
         message.channel.createMessage({ embed: News.commander.getEmbed(cmd) });
     } else {
-        message.channel.createMessage("k");
+        const categories: { [s: string]: string[] } = {};
+        const cmds = [...News.commander.commands.values()];
+
+        cmds.forEach((cmd) => {
+            if (!categories[cmd.config.category])
+                categories[cmd.config.category] = [];
+            categories[cmd.config.category].push(cmd.config.name);
+        });
+
+        const cmdsembed: Eris.EmbedOptions = {
+            author: {
+                name: "Commands",
+                icon_url: News.bot.user.avatarURL
+            },
+            color: NewsCore.Utils.Colors.blurple.num,
+            fields: [],
+            footer: {
+                text: `${cmds.length} Total Commands`
+            }
+        };
+        Object.entries(categories).forEach(([cat, cmds]) =>
+            cmdsembed.fields?.push({
+                name: `${cat} [${cmds.length}]`,
+                value: cmds.map((c) => `\`${c}\``).join(", ")
+            })
+        );
+        message.channel.createMessage({ embed: cmdsembed });
     }
 };
 

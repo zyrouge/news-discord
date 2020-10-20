@@ -3,7 +3,7 @@ import * as NewsCore from "../../Core";
 export const config: NewsCore.CommandConfig = {
     name: "configuration",
     aliases: ["config", "conf"],
-    description: "Configurature settings.",
+    description: "Configurate settings",
     usage: "",
     example: [""],
     category: "Configuration",

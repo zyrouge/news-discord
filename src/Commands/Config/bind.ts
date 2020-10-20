@@ -6,7 +6,7 @@ export const config: NewsCore.CommandConfig = {
     aliases: ["bound"],
     description: "Bind News Bot to a Channel!",
     usage: "[#channel|channel_id]",
-    example: ["", "#news", "1234567890"],
+    example: ["#news", "594543235607822367"],
     category: "Configuration",
     available: "Guild"
 };
