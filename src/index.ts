@@ -11,7 +11,6 @@ else if (process.env.NODE_ENV === "development")
     dotenv.config({ path: path.join(__dirname, "..", ".env.development") });
 
 bindPrototypes();
-console.log(process.env);
 if (!process.env.DISCORD_TOKEN)
     throw new Error("'DISCORD_TOKEN' was not found in '.env'");
 

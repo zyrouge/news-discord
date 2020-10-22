@@ -49,7 +49,7 @@ export const execute: NewsCore.CommandExecute = async (
             color: NewsCore.Utils.Colors.blurple.num,
             fields: [],
             footer: {
-                text: `${cmds.length} Total Commands`
+                text: `Total Commands: ${cmds.length}`
             }
         };
         Object.entries(categories).forEach(([cat, cmds]) =>

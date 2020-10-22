@@ -33,11 +33,6 @@ export function GuildFactory(sequelize: Sequelize) {
         bindToChannel: {
             type: DataTypes.STRING,
             allowNull: true
-        },
-        allowOutsideBound: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false,
-            defaultValue: false
         }
     });
 }

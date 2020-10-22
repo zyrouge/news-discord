@@ -204,6 +204,21 @@ export class CommandHandler {
 
         if (
             "guild" in message.channel &&
+            GuildDB &&
+            !message.member?.permission.has("manageGuild")
+        ) {
+            const bindChannel = GuildDB.getDataValue("bindToChannel");
+            if (bindChannel && message.channel.id !== bindChannel)
+                return message.channel.createMessage({
+                    embed: {
+                        ...errorEmbed,
+                        description: `All commands are bound to <#${bindChannel}>`
+                    }
+                });
+        }
+
+        if (
+            "guild" in message.channel &&
             message.member &&
             command.config.permissions
         ) {
