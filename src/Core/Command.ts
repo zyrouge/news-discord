@@ -4,6 +4,7 @@ import path from "path";
 import { promises as fs } from "fs";
 import Eris from "eris";
 import { Colors } from "./Utils/Colors";
+import { Emojis } from "./Utils/Emojis";
 import { GuildModel } from "./Database/Models/Guild";
 
 export type CommandAvailability = "Guild" | "DM" | "Guild NSFW" | "Any";
@@ -143,6 +144,14 @@ export class CommandHandler {
     async handleMessage(message: Eris.Message) {
         if (message.author.bot) return false;
 
+        const errorEmbed: Eris.EmbedOptions = {
+            author: {
+                name: "Command Execution Error",
+                icon_url: Emojis.cross.url
+            },
+            color: Colors.red.num
+        };
+
         const [GuildDB] = message.guildID
             ? await this.News.Database.Guild.findOrCreate({
                   where: {
@@ -186,7 +195,79 @@ export class CommandHandler {
             command.config.category === "Developer" &&
             !this.News.options.config.owners.includes(message.author.id)
         )
-            return message.channel.createMessage("No Perms");
+            return message.channel.createMessage({
+                embed: {
+                    ...errorEmbed,
+                    description: "Command reserved to **Developers**"
+                }
+            });
+
+        if (
+            "guild" in message.channel &&
+            message.member &&
+            command.config.permissions
+        ) {
+            if (command.config.permissions.user) {
+                const userPerms =
+                    message.channel.permissionOverwrites.get(message.author.id)
+                        ?.json || message.member.permission.json;
+                const reqPerms = Object.entries(
+                    command.config.permissions.user
+                );
+                const missingPerms: string[] = [];
+
+                for (const [perm, bool] of reqPerms) {
+                    if (userPerms[perm] !== bool) missingPerms.push(perm);
+                }
+
+                if (missingPerms.length)
+                    return message.channel.createMessage({
+                        embed: {
+                            ...errorEmbed,
+                            description: `You are lacking the following Permissions: ${missingPerms
+                                .map(
+                                    (p) =>
+                                        `\`${p
+                                            .fromObjToSnakeCase()
+                                            .toUpperCase()}\``
+                                )
+                                .join(" ")}`
+                        }
+                    });
+            }
+
+            if (command.config.permissions.bot) {
+                const userPerms =
+                    message.channel.permissionOverwrites.get(
+                        this.News.bot.user.id
+                    )?.json ||
+                    message.channel.guild.members.get(this.News.bot.user.id)
+                        ?.permission.json ||
+                    {};
+
+                const reqPerms = Object.entries(command.config.permissions.bot);
+                const missingPerms: string[] = [];
+
+                for (const [perm, bool] of reqPerms) {
+                    if (userPerms[perm] !== bool) missingPerms.push(perm);
+                }
+
+                if (missingPerms.length)
+                    return message.channel.createMessage({
+                        embed: {
+                            ...errorEmbed,
+                            description: `I am lacking the following Permissions: ${missingPerms
+                                .map(
+                                    (p) =>
+                                        `\`${p
+                                            .fromObjToSnakeCase()
+                                            .toUpperCase()}\``
+                                )
+                                .join(" ")}`
+                        }
+                    });
+            }
+        }
 
         const cmdArgs: CommandArguments = {
             message,
@@ -197,20 +278,39 @@ export class CommandHandler {
 
         if (command.config.available === "DM") {
             if (message.channel.type !== Eris.Constants.ChannelTypes.DM)
-                return false;
+                return message.channel.createMessage({
+                    embed: {
+                        ...errorEmbed,
+                        description: `\`${command.config.name}\` can be only used in **${command.config.available}**`
+                    }
+                });
+
             cmdArgs.type = "DM";
         }
 
         if (command.config.available === "Guild NSFW") {
             if (!("nsfw" in message.channel) || message.channel.nsfw !== true)
-                return false;
+                return message.channel.createMessage({
+                    embed: {
+                        ...errorEmbed,
+                        description: `\`${command.config.name}\` can be only used in **${command.config.available}**`
+                    }
+                });
+
             cmdArgs.type = "Guild NSFW";
         }
 
         const guild =
             "guild" in message.channel ? message.channel.guild : undefined;
         if (command.config.available === "Guild") {
-            if (!guild) return false;
+            if (!guild)
+                return message.channel.createMessage({
+                    embed: {
+                        ...errorEmbed,
+                        description: `\`${command.config.name}\` can be only used in **${command.config.available}**`
+                    }
+                });
+
             cmdArgs.type = "Guild";
             cmdArgs.guild = guild;
             cmdArgs.guildDB = GuildDB || undefined;

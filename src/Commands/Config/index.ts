@@ -7,7 +7,12 @@ export const config: NewsCore.CommandConfig = {
     usage: "",
     example: [""],
     category: "Configuration",
-    available: "Guild"
+    available: "Guild",
+    permissions: {
+        user: {
+            manageGuild: true
+        }
+    }
 };
 
 export const execute: NewsCore.CommandExecute = async (
@@ -36,7 +41,7 @@ export const execute: NewsCore.CommandExecute = async (
                 color: NewsCore.Utils.Colors.blurple.num
             }
         });
-    }
+    } // todo
 };
 
 export default new NewsCore.Command(config, execute);

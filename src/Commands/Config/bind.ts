@@ -73,7 +73,7 @@ export const execute: NewsCore.CommandExecute = async (
                 color: NewsCore.Utils.Colors.red.num
             } as Eris.EmbedOptions
         });
-    }
+    } // todo
 };
 
 export default new NewsCore.Command(config, execute);
