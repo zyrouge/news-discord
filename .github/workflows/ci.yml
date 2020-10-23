@@ -32,7 +32,16 @@ jobs:
                   rm copy-files-from-to.json tsconfig.json .gitignore README.md
 
             - name: Create README.md
-              run: printf "# This is a automatic build of `[bot](https://github.com/zyrouge/news-discord/tree/bot)` branch using Github Actions\n### Build Info\n * Action ID - `${{ secrets.GITHUB_ACTION }}`\n * Version - `${{ steps.package-version.outputs.current-version }}`\n * Commit SHA - `${{ secrets.GITHUB_SHA }}`" README.md
+              uses: DamianReeves/write-file-action
+              with:
+                  path: ${{ env.home }}/README.md
+                  contents: |
+                      echo "# This is a automatic build of `[bot](https://github.com/zyrouge/news-discord/tree/bot)` branch using Github Actions"
+                      echo "### Build Info"
+                      echo " * Action ID - `$secrets.GITHUB_ACTION`"
+                      echo " * Version - `${{ steps.package-version.outputs.current-version }}`"
+                      echo " * Commit SHA - `${{ secrets.GITHUB_SHA }}`"
+                  write-mode: append
 
             - name: Rename gitignore
               run: mv .gitignore.build .gitignore
