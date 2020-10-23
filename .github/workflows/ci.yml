@@ -27,9 +27,9 @@ jobs:
             - name: Delete Useless files
               run: |
                   rm -rf src docs
-                  rm copy-files-from-to.json tsconfig.json .gitignore README.md
+                  rm copy-files-from-to.json tsconfig.json .gitignore
 
-            - name: Script
+            - name: Running NodeJS script
               uses: actions/github-script@v2
               with:
                   script: |
