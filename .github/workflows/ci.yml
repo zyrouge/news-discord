@@ -1,0 +1,38 @@
+name: CI
+on:
+    push:
+        branches:
+            - bot
+        paths:
+            - "**.ts"
+    pull_request:
+        branches:
+            - bot
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+
+            - name: Uses NodeJS v12.18.3
+              uses: actions/setup-node@v1
+              with:
+                  node-version: "12.18.3"
+
+            - name: Install packages
+              run: npm install
+
+            - name: Compile Typescript
+              run: npm run build
+
+            - name: Push
+              uses: actions/checkout@v2
+              with:
+                  ref: build
+              run: |
+                  git config user.name github-actions
+                  git config user.email github-actions@github.com
+                  git add .
+                  git commit -m "Production Build"
+                  git push
