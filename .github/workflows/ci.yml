@@ -38,6 +38,7 @@ jobs:
                   script: |
                       const script = require(`${process.env.GITHUB_WORKSPACE}/scripts/workflow.js`);
                       console.log(script(process.env.GITHUB_ACTION, "idk", process.env.GITHUB_SHA));
+                      console.log(JSON.stringify(process.env))
 
             - name: Rename gitignore
               run: mv .gitignore.build .gitignore
