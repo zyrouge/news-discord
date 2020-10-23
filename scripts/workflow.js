@@ -1,6 +1,15 @@
 const fs = require("fs");
 
-module.exports = ({ run_id, version, sha, event, pusher }) => {
+module.exports = ({
+    run_id,
+    version,
+    sha,
+    event,
+    pusher,
+    github,
+    owner,
+    repo
+}) => {
     fs.appendFileSync(
         "./README.md",
         [
@@ -18,4 +27,13 @@ module.exports = ({ run_id, version, sha, event, pusher }) => {
             })} (IST)**`
         ].join("\n")
     );
+    console.log("Updated README.md");
+
+    const tag = `v${version}`;
+    github.repos.createRelease({
+        owner,
+        repo,
+        tag_name: tag
+    });
+    console.log(`Release created: ${tag}`);
 };

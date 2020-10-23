@@ -36,6 +36,9 @@ jobs:
                       const script = require(`${process.env.GITHUB_WORKSPACE}/scripts/workflow.js`);
                       const pkg = require(`${process.env.GITHUB_WORKSPACE}/package.json`);
                       script({
+                        github: github,
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
                         run_id: process.env.RUNNER_TRACKING_ID,
                         version: pkg.version, 
                         sha: process.env.GITHUB_SHA, 

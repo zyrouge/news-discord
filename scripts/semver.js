@@ -7,9 +7,9 @@ const pkgpath = path.resolve("package.json");
 const pkg = require(pkgpath);
 
 const update = async () => {
-    let inc = "minor";
+    let inc = "patch";
     if (process.argv.includes("--major")) inc = "major";
-    else if (process.argv.includes("--patch")) inc = "patch";
+    else if (process.argv.includes("--major")) inc = "major";
 
     const prevVer = pkg.version;
     pkg.version = semver.inc(prevVer, inc);

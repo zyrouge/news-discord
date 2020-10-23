@@ -1,6 +1,6 @@
 {
     "name": "news-bot",
-    "version": "1.0.4",
+    "version": "1.1.0",
     "description": "",
     "main": "./build/index.js",
     "types": "./src/types.d.ts",
@@ -9,9 +9,9 @@
         "dev": "npm run build && set \"NODE_ENV=development\" && node .",
         "build": "tsc",
         "docs": "npx typedoc --out ./docs --readme README.md --json ./docs/docs.json --theme ./node_modules/typedoc-neo-theme/bin/default --includeVersion ./src && npx copy-files-from-to --config ./copy-files-from-to.json",
-        "push": "npm run semver:minor && git push",
-        "push:major": "npm run semver:major && git push",
-        "push:patch": "npm run semver:patch && git push",
+        "push": "npm run semver:patch && npm run docs && git push",
+        "push:major": "npm run semver:major && npm run docs && git push",
+        "push:patch": "npm run semver:patch && npm run docs && git push",
         "semver:minor": "node ./scripts/semver --minor",
         "semver:major": "node ./scripts/semver --major",
         "semver:patch": "node ./scripts/semver --patch"
