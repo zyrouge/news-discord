@@ -31,17 +31,13 @@ jobs:
                   rm -rf src docs
                   rm copy-files-from-to.json tsconfig.json .gitignore README.md
 
-            - name: Create README.md
-              uses: DamianReeves/write-file-action
+              #steps.package-version.outputs.current-version
+            - name: Script
+              uses: actions/github-script@v2
               with:
-                  path: ${{ env.home }}/README.md
-                  contents: |
-                      echo "# This is a automatic build of `[bot](https://github.com/zyrouge/news-discord/tree/bot)` branch using Github Actions"
-                      echo "### Build Info"
-                      echo " * Action ID - `$secrets.GITHUB_ACTION`"
-                      echo " * Version - `${{ steps.package-version.outputs.current-version }}`"
-                      echo " * Commit SHA - `${{ secrets.GITHUB_SHA }}`"
-                  write-mode: append
+                  script: |
+                      const script = require(`${process.env.GITHUB_WORKSPACE}/scripts/workflow.js`);
+                      console.log(script(process.env.GITHUB_ACTION, "idk", process.env.GITHUB_SHA));
 
             - name: Rename gitignore
               run: mv .gitignore.build .gitignore
