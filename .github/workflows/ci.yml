@@ -13,8 +13,6 @@ jobs:
         steps:
             - uses: actions/checkout@v2
 
-            - uses: martinbeentjes/npm-get-version-action@master
-
             - name: Uses NodeJS v12.18.3
               uses: actions/setup-node@v1
               with:
@@ -31,16 +29,19 @@ jobs:
                   rm -rf src docs
                   rm copy-files-from-to.json tsconfig.json .gitignore README.md
 
-              #
             - name: Script
               uses: actions/github-script@v2
-              env:
-                  NPM_PACKAGE_VERSION: ${{ steps.package-version.outputs.current-version }}
               with:
                   script: |
                       const script = require(`${process.env.GITHUB_WORKSPACE}/scripts/workflow.js`);
-                      console.log(script(process.env.RUNNER_TRACKING_ID, process.env.NPM_PACKAGE_VERSION, process.env.GITHUB_SHA, process.env.GITHUB_EVENT_NAME));
-                      console.log(JSON.stringify(context))
+                      const pkg = require(`${process.env.GITHUB_WORKSPACE}/package.json`);
+                      script({
+                        run_id: process.env.RUNNER_TRACKING_ID,
+                        version: pkg.version, 
+                        sha: process.env.GITHUB_SHA, 
+                        event: process.env.GITHUB_EVENT_NAME,
+                        pusher: context.payload.pusher
+                      });
 
             - name: Rename gitignore
               run: mv .gitignore.build .gitignore
