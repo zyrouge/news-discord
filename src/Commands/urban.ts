@@ -59,13 +59,13 @@ export const execute: NewsCore.CommandExecute = async (
         });
 
     let defNum = 0;
-    const arrows = { right: "➡️", left: "⬅️" };
+    const arrows = { left: "⬅️", right: "➡️" };
+    const emjAr = Object.values(arrows);
 
     const msg = await message.channel.createMessage({
         embed: getEmbed(data.list[defNum])
     });
-    msg.addReaction(arrows.left);
-    msg.addReaction(arrows.right);
+    emjAr.forEach((e) => msg.addReaction(e).catch(() => {}));
 
     const reactor = new NewsCore.Utils.ReactionHandler(
         News.bot,
@@ -76,23 +76,24 @@ export const execute: NewsCore.CommandExecute = async (
     );
 
     reactor.on("reacted", (reaction) => {
-        let isValidReaction = false;
-        if (reaction.emoji.name === arrows.left) {
-            if (data.list[defNum - 1]) defNum = defNum - 1;
-            else defNum = data.list.length - 1;
-            isValidReaction = true;
-        } else if (reaction.emoji.name === arrows.right) {
-            if (data.list[defNum + 1]) defNum = defNum + 1;
-            else defNum = 0;
-            isValidReaction = true;
-        }
-        if (isValidReaction) {
+        if (emjAr.includes(reaction.emoji.name)) {
+            if (reaction.emoji.name === arrows.left) {
+                if (data.list[defNum - 1]) defNum -= 1;
+                else defNum = data.list.length - 1;
+            } else if (reaction.emoji.name === arrows.right) {
+                if (data.list[defNum + 1]) defNum += 1;
+                else defNum = 0;
+            }
             msg.edit({ embed: getEmbed(data.list[defNum]) });
             msg.removeReaction(
                 reaction.emoji.name,
                 message.author.id
             ).catch(() => {});
         }
+    });
+
+    reactor.on("end", () => {
+        msg.removeReactions().catch(() => {});
     });
 
     function getEmbed(def: UrbanDictionary) {

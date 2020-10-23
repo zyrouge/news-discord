@@ -1,6 +1,7 @@
 import { Constants } from "../Constants";
 import { JSDOM } from "jsdom";
 import { Logger } from "../Utils/Logger";
+import { Emojis } from "../Utils/Emojis";
 import { NewsAttributes } from "../Database/Models/News";
 import DayJS from "dayjs";
 import parse from "parse-duration";
@@ -31,12 +32,14 @@ export class BingManager {
     hot: BingNews[];
     cache: BingNews[];
     autoUpdateInterval?: NodeJS.Timeout;
+    embeds: string[];
 
     constructor(options: BingManagerOptions) {
         this.options = options;
         this.options.updateInterval = 1 * 60 * 1000;
         this.hot = [];
         this.cache = [];
+        this.embeds = [];
 
         if (this.options.updateInterval) this.autoUpdate();
     }
@@ -114,9 +117,30 @@ export class BingManager {
                 this.hot.push(news);
             }
         }
+        this.updateEmbeds();
 
         Logger.log(`Updated Bing Headlines in ${Date.now() - startTime}ms`);
         this.lastUpdated = startTime;
+    }
+
+    updateEmbeds() {
+        this.embeds = [];
+        const pages: string[] = [];
+        let current = 0;
+
+        this.hot.forEach((art, i) => {
+            let page = pages[current];
+            if (!page) page = "";
+            const line = `\n\`${i + 1}\` **[${art.title}](${art.url})**`;
+            if (page.length + art.title.length + art.url.length < 2000) {
+                page += line;
+            } else {
+                current += 1;
+                page += line;
+            }
+            pages[current] = page;
+        });
+        this.embeds = pages;
     }
 
     async search(term: string) {

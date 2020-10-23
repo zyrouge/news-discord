@@ -20,9 +20,8 @@ export interface ReactionHandler {
     on(
         name: "end",
         handler: (
-            msg: Eris.Message,
-            emoji: Eris.PartialEmoji,
-            userID: string
+            reactions: ReactionCollect[],
+            reason: "time" | "maxMatches"
         ) => void
     ): this;
 }
@@ -114,7 +113,7 @@ export function collectReactions(
     message: Eris.Message,
     filter: (userID: string) => boolean,
     options: ReactionHandlerOpts
-) {
+): Promise<ReactionCollect[]> {
     const bulkCollector = new ReactionHandler(
         client,
         message,

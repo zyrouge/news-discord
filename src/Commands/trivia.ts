@@ -28,6 +28,8 @@ export const execute: NewsCore.CommandExecute = async (
     News: NewsCore.Client,
     { message, args }: NewsCore.CommandArguments
 ) => {
+    const msg = await message.channel.createMessage("Fetching Trivias...");
+
     const amount = args[0] && !Number.isNaN(args[0]) ? parseInt(args[0]) : 5;
 
     const response = await axios.get(
@@ -57,7 +59,8 @@ export const execute: NewsCore.CommandExecute = async (
     const numAr = Object.values(numbers);
     const performance: boolean[] = [];
 
-    const msg = await message.channel.createMessage({
+    msg.edit({
+        content: "",
         embed: getEmbed(data.results[current])
     });
     numAr.forEach((e) => msg.addReaction(e).catch(() => {}));
@@ -88,6 +91,10 @@ export const execute: NewsCore.CommandExecute = async (
                 msg.removeReactions().catch(() => {});
             }
         }
+    });
+
+    reactor.on("end", () => {
+        msg.removeReactions().catch(() => {});
     });
 
     function getPerformance() {
