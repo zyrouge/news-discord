@@ -1,7 +1,6 @@
 import { Constants } from "../Constants";
 import { JSDOM } from "jsdom";
 import { Logger } from "../Utils/Logger";
-import { Emojis } from "../Utils/Emojis";
 import { NewsAttributes } from "../Database/Models/News";
 import DayJS from "dayjs";
 import parse from "parse-duration";
