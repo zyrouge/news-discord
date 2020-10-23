@@ -32,15 +32,13 @@ jobs:
                   rm copy-files-from-to.json tsconfig.json .gitignore README.md
 
             - name: Create README.md
-              run: printf "# This is a automatic build of `[bot](https://github.com/zyrouge/news-discord/tree/bot)` branch using Github Actions\n### Build Info\n * Action ID - `${{ secrets.GITHUB_ACTION }}`\n * Version - `${{ steps.package-version.outputs.current-version}}`\n * Commit SHA - `${{ secrets.GITHUB_SHA }}`" README.md
+              run: printf "# This is a automatic build of `[bot](https://github.com/zyrouge/news-discord/tree/bot)` branch using Github Actions\n### Build Info\n * Action ID - `${{ secrets.GITHUB_ACTION }}`\n * Version - `${{ steps.package-version.outputs.current-version }}`\n * Commit SHA - `${{ secrets.GITHUB_SHA }}`" README.md
 
             - name: Rename gitignore
               run: mv .gitignore.build .gitignore
 
-            - name: Push to built branch
-              uses: Automattic/action-commit-to-branch@master
-              with:
-                  branch: "build"
-                  commit_message: "Production Build"
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            - name: Push to build branch
+              run: |
+                  git add .
+                  git commit -m "Auto-build"
+                  git push --force origin build
