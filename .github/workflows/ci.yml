@@ -31,14 +31,16 @@ jobs:
                   rm -rf src docs
                   rm copy-files-from-to.json tsconfig.json .gitignore README.md
 
-              #steps.package-version.outputs.current-version
+              #
             - name: Script
               uses: actions/github-script@v2
+              env:
+                  NPM_PACKAGE_VERSION: ${{ steps.package-version.outputs.current-version }}
               with:
                   script: |
                       const script = require(`${process.env.GITHUB_WORKSPACE}/scripts/workflow.js`);
-                      console.log(script(process.env.RUNNER_TRACKING_ID, "idk", process.env.GITHUB_SHA`, process.env.GITHUB_EVENT_NAME));
-                      console.log(JSON.stringify(context), steps ? JSON.stringify(steps) : null)
+                      console.log(script(process.env.RUNNER_TRACKING_ID, process.env.NPM_PACKAGE_VERSION, process.env.GITHUB_SHA, process.env.GITHUB_EVENT_NAME));
+                      console.log(JSON.stringify(context))
 
             - name: Rename gitignore
               run: mv .gitignore.build .gitignore
