@@ -28,7 +28,7 @@ jobs:
               run: |
                   git config --global user.name github-actions
                   git config --global user.email github-actions@github.com
+                  git checkout build || git checkout -b build
                   git add -f build
                   git commit -m "Production Build"
-                  git checkout build || git checkout -b build
                   git push origin build
