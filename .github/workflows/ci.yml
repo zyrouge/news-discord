@@ -32,10 +32,10 @@ jobs:
             - name: Rename gitignore
               run: mv .gitignore.build .gitignore
 
-            - name: Push
-              run: |
-                  git config --global user.name github-actions
-                  git config --global user.email github-actions@github.com
-                  git add .
-                  git commit -m "Production Build"
-                  git push --force origin build
+            - name: Push to built branch
+              uses: Automattic/action-commit-to-branch@master
+              with:
+                  branch: "build"
+                  commit_message: "Production Build"
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
