@@ -24,11 +24,9 @@ jobs:
             - name: Compile Typescript
               run: npm run build
 
-            - name: Delete Useless files
+            - name: Delete gitignore
               run: |
-                  rm -rf src docs
-                  rm copy-files-from-to.json tsconfig.json .gitignore
-                  ls
+                  rm .gitignore
 
             - name: Rename gitignore
               run: mv .gitignore.build .gitignore
