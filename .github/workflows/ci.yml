@@ -13,6 +13,8 @@ jobs:
         steps:
             - uses: actions/checkout@v2
 
+            - uses: martinbeentjes/npm-get-version-action@master
+
             - name: Uses NodeJS v12.18.3
               uses: actions/setup-node@v1
               with:
@@ -27,7 +29,10 @@ jobs:
             - name: Delete Useless files
               run: |
                   rm -rf src docs
-                  rm copy-files-from-to.json tsconfig.json .gitignore
+                  rm copy-files-from-to.json tsconfig.json .gitignore README.md
+
+            - name: Create README.md
+              run: printf "# This is a automatic build of `[bot](https://github.com/zyrouge/news-discord/tree/bot)` branch using Github Actions\n### Build Info\n * Action ID - `${{ GITHUB_ACTION }}`\n * Version - `${{ steps.package-version.outputs.current-version}}`\n * Commit SHA - `${{ GITHUB_SHA }}`" README.md
 
             - name: Rename gitignore
               run: mv .gitignore.build .gitignore
