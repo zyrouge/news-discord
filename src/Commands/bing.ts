@@ -29,7 +29,7 @@ export const execute: NewsCore.CommandExecute = async (
         });
 
     const msg = await message.channel.createMessage(
-        `Fetching results for \`${terms}\``
+        `Fetching results for \`${terms}\`...`
     );
 
     const articles = await News.NewsManager.Bing.search(terms);

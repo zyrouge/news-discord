@@ -15,6 +15,18 @@ export const execute: NewsCore.CommandExecute = async (
     News: NewsCore.Client,
     { message, args, guild, guildDB }: NewsCore.CommandArguments
 ) => {
+    if (!guild || !guildDB)
+        return message.channel.createMessage({
+            embed: {
+                author: {
+                    name:
+                        "Guild does not exist in cache. Please report this issue in our Discord Server!",
+                    icon_url: NewsCore.Utils.Emojis.cross.url
+                },
+                color: NewsCore.Utils.Colors.red.num
+            } as Eris.EmbedOptions
+        });
+
     const arg1 = args[0];
     if (!arg1)
         return message.channel.createMessage({
@@ -31,7 +43,7 @@ export const execute: NewsCore.CommandExecute = async (
         const ChannelID = !Number.isNaN(arg1)
             ? NewsCore.Utils.MentionsManager.ChannelMention(arg1)
             : arg1;
-        const MChannel = ChannelID ? guild?.channels.get(ChannelID) : undefined;
+        const MChannel = ChannelID ? guild.channels.get(ChannelID) : undefined;
 
         if (!MChannel)
             return message.channel.createMessage({
@@ -44,7 +56,7 @@ export const execute: NewsCore.CommandExecute = async (
                 } as Eris.EmbedOptions
             });
 
-        await guildDB?.update({
+        await guildDB.update({
             bindToChannel: MChannel.id
         });
 
@@ -59,7 +71,7 @@ export const execute: NewsCore.CommandExecute = async (
             } as Eris.EmbedOptions
         });
     } else {
-        await guildDB?.update({
+        await guildDB.update({
             bindToChannel: undefined
         });
 
@@ -73,7 +85,7 @@ export const execute: NewsCore.CommandExecute = async (
                 color: NewsCore.Utils.Colors.red.num
             } as Eris.EmbedOptions
         });
-    } // todo
+    }
 };
 
 export default new NewsCore.Command(config, execute);

@@ -43,7 +43,7 @@ export const execute: NewsCore.CommandExecute = async (
 
         const cmdsembed: Eris.EmbedOptions = {
             author: {
-                name: "Commands",
+                name: "❔ Commands",
                 icon_url: News.bot.user.avatarURL
             },
             color: NewsCore.Utils.Colors.blurple.num,
