@@ -25,6 +25,10 @@ jobs:
               run: npm run build
 
             - name: Push
-              uses: actions/checkout@v2
-              with:
-                  ref: build
+              run: |
+                  git config --global user.name github-actions
+                  git config --global user.email github-actions@github.com
+                  git add .
+                  git commit -m "Production Build"
+                  git checkout build || git checkout -b build
+                  git push
