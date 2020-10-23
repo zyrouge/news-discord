@@ -22,5 +22,6 @@ export class Emoji {
 export const Emojis = {
     tick: new Emoji("<:greentick:697365161547268186>"),
     cross: new Emoji("<:redtick:697365222654214145>"),
-    fire: "🔥"
+    fire: "🔥",
+    timer: "⏲️"
 };

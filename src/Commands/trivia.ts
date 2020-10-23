@@ -89,11 +89,18 @@ export const execute: NewsCore.CommandExecute = async (
             } else {
                 msg.edit({ embed: getPerformance() });
                 msg.removeReactions().catch(() => {});
+                reactor.stopListening("done");
             }
         }
     });
 
     reactor.on("end", () => {
+        if (current + 1 !== data.results.length)
+            msg.edit({
+                content: `${NewsCore.Utils.Emojis.timer} Times up! Better luck next time.`,
+                embed: getPerformance()
+            });
+
         msg.removeReactions().catch(() => {});
     });
 
