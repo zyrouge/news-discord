@@ -7,4 +7,4 @@
 -   Feel free to contribute this project
 -   Commercial Usage is highly discouraged
 
-> Also read the `LICENSE` file
+#### Also read the `LICENSE` file

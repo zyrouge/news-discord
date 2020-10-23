@@ -1,0 +1,11 @@
+{
+    "copyFiles": [
+        {
+            "from": "https://raw.githubusercontent.com/zyrouge/news-discord/others/.nojekyll",
+            "to": "./docs/.nojekyll"
+        }
+    ],
+    "copyFilesSettings": {
+        "ignoreDotFilesAndFolders": true
+    }
+}
