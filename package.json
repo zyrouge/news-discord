@@ -8,7 +8,13 @@
         "start": "set \"NODE_ENV=production\" && node .",
         "dev": "npm run build && set \"NODE_ENV=development\" && node .",
         "build": "tsc",
-        "docs": "npx typedoc --out ./docs --readme README.md --json ./docs/docs.json --theme ./node_modules/typedoc-neo-theme/bin/default --includeVersion ./src && npx copy-files-from-to --config ./copy-files-from-to.json"
+        "docs": "npx typedoc --out ./docs --readme README.md --json ./docs/docs.json --theme ./node_modules/typedoc-neo-theme/bin/default --includeVersion ./src && npx copy-files-from-to --config ./copy-files-from-to.json",
+        "push": "npm run semver:minor && git push",
+        "push:major": "npm run semver:major && git push",
+        "push:patch": "npm run semver:patch && git push",
+        "semver:minor": "node ./scripts/semver --minor",
+        "semver:major": "node ./scripts/semver --major",
+        "semver:patch": "node ./scripts/semver --patch"
     },
     "repository": {
         "type": "git",
@@ -44,6 +50,7 @@
         "@types/turndown": "^5.0.0",
         "copy-files-from-to": "^3.2.0",
         "copyfiles": "^2.4.0",
+        "semver": "^7.3.2",
         "sequelize-cli": "^6.2.0",
         "typedoc": "^0.19.2",
         "typedoc-neo-theme": "^1.0.10",
