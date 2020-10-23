@@ -41,6 +41,7 @@ jobs:
               run: |
                   git config --local user.email "action@github.com"
                   git config --local user.name "GitHub Action"
+                  git fetch
                   git add .
                   git commit -m "Auto-build"
                   git push --force origin build
