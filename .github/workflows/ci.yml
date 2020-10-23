@@ -37,11 +37,7 @@ jobs:
             - name: Rename gitignore
               run: mv .gitignore.build .gitignore
 
-            - name: Push to build branch
-              run: |
-                  git config --local user.email "action@github.com"
-                  git config --local user.name "GitHub Action"
-                  git fetch
-                  git add .
-                  git commit -m "Auto-build"
-                  git push --force origin build
+            - uses: mikeal/publish-to-github-action@master
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  BRANCH_NAME: build
