@@ -36,7 +36,6 @@ jobs:
               run: |
                   git config --global user.name github-actions
                   git config --global user.email github-actions@github.com
-                  git checkout origin/build
                   git add .
                   git commit -m "Production Build"
                   git push --force origin build
