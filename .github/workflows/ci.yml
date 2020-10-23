@@ -27,7 +27,10 @@ jobs:
             - name: Delete Useless files
               run: |
                   rm -rf src docs
-                  rm copy-files-from-to.json tsconfig.json
+                  rm copy-files-from-to.json tsconfig.json .gitignore
+
+            - name: Rename gitignore
+              run: mv .gitignore.build .gitignore
 
             - name: Push
               run: |
