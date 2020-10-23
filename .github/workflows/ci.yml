@@ -27,7 +27,7 @@ jobs:
             - name: Delete Useless files
               run: |
                   rm -rf src docs
-                  rm copy-files-from-to.json tsconfig.json
+                  rm rm copy-files-from-to.json tsconfig.json
 
             - name: Push
               run: |
