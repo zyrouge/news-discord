@@ -21,6 +21,9 @@ const options = [
     }
 ];
 
+const info = chalk.cyanBright("INFO");
+const error = chalk.cyanBright("ERROR");
+
 const update = async () => {
     const args = commandLineArgs(options, { argv: process.argv });
 
@@ -34,7 +37,7 @@ const update = async () => {
 
     fs.writeFileSync(pkgpath, JSON.stringify(pkg, undefined, 4));
     console.log(
-        `${chalk.blueBright`[SemVer]`} Version updated: ${chalk.bold.greenBright(
+        `${info} ${chalk.blueBright`[SemVer]`} Version updated: ${chalk.bold.greenBright(
             prevVer
         )} -> ${chalk.bold.greenBright(pkg.version)}`
     );
@@ -42,7 +45,9 @@ const update = async () => {
     /* git add */
     const gitAdd = args["add"] ? args["add"].join(" ") : ".";
     console.log(
-        `${chalk.blueBright`[Files]`} Git Add Files: ${chalk.gray(gitAdd)}`
+        `${info} ${chalk.blueBright`[Files]`} Git Add Files: ${chalk.gray(
+            gitAdd
+        )}`
     );
     execSync(`git add ${gitAdd}`);
 
@@ -50,19 +55,19 @@ const update = async () => {
     const gitCommit = args["message"];
     if (!gitCommit || !gitCommit.length) {
         console.log(
-            `${chalk.blueBright`[Commit]`} No Commit Message was provided`
+            `${error} ${chalk.blueBright`[Commit]`} No Commit Message was provided`
         );
         process.exit();
     }
     console.log(
-        `${chalk.blueBright`[Files]`} Git Commit Message: ${chalk.gray(
+        `${info} ${chalk.blueBright`[Files]`} Git Commit Message: ${chalk.gray(
             gitCommit.join(" ")
         )}`
     );
     execSync(`git commit -m "${gitCommit.join(" ")}"`);
 
     /* git push */
-    console.log(`${chalk.blueBright`[Push]`} Pushing to GitHub`);
+    console.log(`${info} ${chalk.blueBright`[Push]`} Pushing to GitHub`);
     execSync(`git push`);
 };
 
