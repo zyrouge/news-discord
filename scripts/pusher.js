@@ -12,6 +12,7 @@ const options = [
     { name: "add", alias: "a", type: String, multiple: true },
     { name: "minor", type: Boolean },
     { name: "major", type: Boolean },
+    { name: "nodocs", type: Boolean },
     {
         name: "message",
         alias: "m",
@@ -41,6 +42,15 @@ const update = async () => {
             prevVer
         )} -> ${chalk.bold.greenBright(pkg.version)}`
     );
+
+    /* Generate Docs */
+    const ignoreDocs = !!args["nodocs"];
+    if (!ignoreDocs) {
+        console.log(
+            `${info} ${chalk.blueBright`[Docs]`} Generating Documentation`
+        );
+        execSync(`npm run docs`);
+    }
 
     /* git add */
     const gitAdd = args["add"] ? args["add"].join(" ") : ".";
