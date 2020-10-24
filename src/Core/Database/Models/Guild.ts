@@ -31,10 +31,6 @@ export function GuildFactory(sequelize: Sequelize) {
             type: DataTypes.STRING,
             allowNull: true
         },
-        autoNewsTopic: {
-            type: DataTypes.STRING,
-            allowNull: true
-        },
         bindToChannel: {
             type: DataTypes.STRING,
             allowNull: true
