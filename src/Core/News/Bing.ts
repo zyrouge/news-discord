@@ -116,18 +116,17 @@ export class BingManager {
                 this.hot.push(news);
             }
         }
-        this.updateEmbeds();
+        this.embeds = this.createPages(this.hot);
 
         Logger.log(`Updated Bing Headlines in ${Date.now() - startTime}ms`);
         this.lastUpdated = startTime;
     }
 
-    updateEmbeds() {
-        this.embeds = [];
+    createPages(arts: BingNews[]) {
         const pages: string[] = [];
         let current = 0;
 
-        this.hot.forEach((art, i) => {
+        arts.forEach((art, i) => {
             let page = pages[current];
             if (!page) page = "";
             const line = `\n\`${i + 1}\` **[${art.title}](${art.url})**`;
@@ -139,7 +138,8 @@ export class BingManager {
             }
             pages[current] = page;
         });
-        this.embeds = pages;
+
+        return pages;
     }
 
     async search(term: string) {

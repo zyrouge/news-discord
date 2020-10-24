@@ -1,3 +1,6 @@
 owners:
-  - "521007613475946496"
+    - "521007613475946496"
 prefix: nws!
+server:
+    - invite: https://discord.gg/dujBYcs
+    - id: "767046171738767371"

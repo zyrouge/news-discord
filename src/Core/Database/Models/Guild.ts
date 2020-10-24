@@ -4,6 +4,7 @@ export interface GuildAttributes {
     guildID: string;
     prefix?: string | null;
     autoNewsChannel?: string | null;
+    autoNewsTopic?: string | null;
     bindToChannel?: string | null;
     allowOutsideBound?: boolean | null;
 }
@@ -27,6 +28,10 @@ export function GuildFactory(sequelize: Sequelize) {
             allowNull: true
         },
         autoNewsChannel: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        autoNewsTopic: {
             type: DataTypes.STRING,
             allowNull: true
         },

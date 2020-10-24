@@ -49,9 +49,19 @@ export class CronJobs {
             const channel = this.News.bot.guilds
                 .get(GuildDB.getDataValue("guildID"))
                 ?.channels.get(channelID);
+            const topic = GuildDB.getDataValue("autoNewsTopic");
 
-            const description = this.News.NewsManager.Bing.embeds[0];
-            if (channel && "createMessage" in channel) {
+            let description: string;
+            const date = new Date(this.News.NewsManager.Bing.lastUpdated);
+
+            if (topic) {
+                const newArts = await this.News.NewsManager.Bing.search(topic);
+                description = this.News.NewsManager.Bing.createPages(
+                    newArts
+                )[0];
+            } else description = this.News.NewsManager.Bing.embeds[0];
+
+            if (channel && "createMessage" in channel && description) {
                 const prefix =
                     GuildDB.getDataValue("prefix") ||
                     this.News.options.config.prefix;
@@ -59,12 +69,10 @@ export class CronJobs {
                 channel.createMessage({
                     embed: {
                         title: `${Emojis.fire} Hot Headlines`,
-                        description,
-                        timestamp: new Date(
-                            this.News.NewsManager.Bing.lastUpdated
-                        ),
+                        description: description,
+                        timestamp: date,
                         footer: {
-                            text: `Use ${prefix}hot to view all • Last updated at`,
+                            text: `Use ${prefix}hot to view latest news • Last updated at`,
                             icon_url: this.News.bot.user.avatarURL
                         }
                     }

@@ -18,6 +18,10 @@ export interface ClientOptions {
 export interface Config {
     owners: string[];
     prefix: string;
+    server: {
+        invite: string;
+        id: string;
+    };
 }
 
 export class ClientUtils {
