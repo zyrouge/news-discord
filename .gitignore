@@ -1,8 +1,6 @@
 node_modules
 package-lock.json
-.env.*
-/build
-/database
-/logs
-.vscode
-.prettierrc
+copy-files-from-to.json
+tsconfig.json
+docs
+src
