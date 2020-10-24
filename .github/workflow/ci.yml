@@ -1,0 +1,32 @@
+name: CI
+on:
+  push:
+    branches:
+      - status
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Uses NodeJS v12.18.3
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.18.3"
+
+      - name: Install packages
+        run: yarn install
+
+      - name: Generate Output
+        run: yarn generate
+
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Generated"
+
+      - name: Push changes
+        run: git push origin master
