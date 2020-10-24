@@ -60,7 +60,7 @@ const update = async () => {
         process.exit();
     }
     console.log(
-        `${info} ${chalk.blueBright`[Files]`} Git Commit Message: ${chalk.greenBright(
+        `${info} ${chalk.blueBright`[Commit]`} Git Commit Message: ${chalk.greenBright(
             gitCommit.join(" ")
         )}`
     );
