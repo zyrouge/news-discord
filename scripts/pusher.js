@@ -45,7 +45,7 @@ const update = async () => {
     /* git add */
     const gitAdd = args["add"] ? args["add"].join(" ") : ".";
     console.log(
-        `${info} ${chalk.blueBright`[Files]`} Git Add Files: ${chalk.gray(
+        `${info} ${chalk.blueBright`[Files]`} Git Add Files: ${chalk.greenBright(
             gitAdd
         )}`
     );
@@ -60,7 +60,7 @@ const update = async () => {
         process.exit();
     }
     console.log(
-        `${info} ${chalk.blueBright`[Files]`} Git Commit Message: ${chalk.gray(
+        `${info} ${chalk.blueBright`[Files]`} Git Commit Message: ${chalk.greenBright(
             gitCommit.join(" ")
         )}`
     );
