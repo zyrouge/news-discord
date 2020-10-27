@@ -29,3 +29,5 @@ Done
 * Actually another process for Development# v1.1.50
 * Added Requirements# v1.1.51
 * Fixes Malformed Changelogs
+# v1.1.52
+* Malformed Changelogs (md)
