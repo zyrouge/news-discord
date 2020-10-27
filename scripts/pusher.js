@@ -1,5 +1,5 @@
 const semver = require("semver");
-const fs = require("fs");
+const fs = require("fs-extra");
 const path = require("path");
 const chalk = require("chalk");
 const commandLineArgs = require("command-line-args");
@@ -76,6 +76,20 @@ const update = async () => {
             `(${_.capitalize(inc)})`
         )}`
     );
+
+    /* Changelogs */
+    const changeLogsDir = path.resolve("changelogs.md");
+    fs.ensureFileSync(changeLogsDir);
+    const changes = (
+        await inquirer.prompt([
+            {
+                type: "editor",
+                message: "Write about the Changes:",
+                name: "changes"
+            }
+        ])
+    ).changes;
+    fs.appendFileSync(changeLogsDir, `# v${pkg.version}\n${changes}`);
 
     /* Generate Docs */
     const ignoreDocs = !!args["nodocs"];
