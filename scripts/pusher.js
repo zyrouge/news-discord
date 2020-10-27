@@ -148,7 +148,7 @@ const update = async () => {
 
     /* git push */
     console.log(`${info} ${chalk.blueBright("[Push]")} Pushing to GitHub`);
-    const GitPushOutput = await git.push("npm run git:push");
+    const GitPushOutput = await git.push();
     Output(chalk.gray(GitPushOutput));
 };
 

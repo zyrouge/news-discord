@@ -11,4 +11,5 @@
 * Push to GitHub automatically# v1.1.34
 * Use async# v1.1.35
 * Switching to `package.json` scripts# v1.1.36
-* No more commit messages
+* No more commit messages# v1.1.37
+* Simply push
