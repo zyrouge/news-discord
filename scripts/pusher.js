@@ -12,6 +12,7 @@ const pkg = require(pkgpath);
 
 const options = [
     { name: "add", alias: "a", type: String, multiple: true },
+    { name: "patch", type: Boolean },
     { name: "minor", type: Boolean },
     { name: "major", type: Boolean },
     { name: "nodocs", type: Boolean },
@@ -43,9 +44,24 @@ const update = async () => {
     const Output = (text) => (showOutput && text ? console.log(text) : null);
 
     /* SemVer */
-    let inc = "patch";
-    if (args["minor"]) inc = "minor";
+    let inc;
+    if (args["patch"]) inc = "patch";
+    else if (args["minor"]) inc = "minor";
     else if (args["major"]) inc = "major";
+
+    let promptInc = !inc
+        ? await inquirer.prompt([
+              {
+                  type: "list",
+                  name: "inc",
+                  message: "Select next Version:",
+                  choices: ["Patch", "Minor", "Major"]
+              }
+          ])
+        : null;
+
+    if (promptInc) inc = promptInc.inc.toLowerCase();
+    if (!inc) throw new Error("No semver update was received.");
 
     const prevVer = pkg.version;
     pkg.version = semver.inc(prevVer, inc);
