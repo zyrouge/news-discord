@@ -110,7 +110,7 @@ const update = async () => {
     }
 
     /* Changelogs JSON */
-    const changeLogsJSONDir = path.resolve("docs", "changelogs.json");
+    const changeLogsJSONDir = path.resolve("data", "changelogs.json");
     fs.ensureFileSync(changeLogsJSONDir);
     let changeLogsJSON = fs.readFileSync(changeLogsJSONDir).toString();
     if (!changeLogsJSON) changeLogsJSON = {};
