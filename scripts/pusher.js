@@ -113,7 +113,7 @@ const update = async () => {
     const changeLogsJSONDir = path.resolve("data", "changelogs.json");
     fs.ensureFileSync(changeLogsJSONDir);
     let changeLogsJSON = fs.readFileSync(changeLogsJSONDir).toString();
-    if (!changeLogsJSON) changeLogsJSON = {};
+    changeLogsJSON = changeLogsJSON.length ? JSON.parse(changeLogsJSON) : {};
     changeLogsJSON[pkg.version] = {
         version: pkg.version,
         semver: `v${pkg.version}`,
