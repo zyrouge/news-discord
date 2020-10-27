@@ -26,4 +26,5 @@ Done
 * YARN to Yarn
 * And Fixes some Typos# v1.1.48
 * YARN -> Yarn x2# v1.1.49
-* Actually another process for Development
+* Actually another process for Development# v1.1.50
+* Added Requirements

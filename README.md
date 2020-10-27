@@ -11,6 +11,13 @@
 
 [Click here](changelogs.md)
 
+## Requirements
+
+-   [Git](https://git-scm.com/downloads)
+-   [NodeJS](https://nodejs.org/en/download/)
+-   [A Discord Application](https://discord.com/developers/applications)
+-   Some IDE
+
 ## Setup
 
 -   Cloning
