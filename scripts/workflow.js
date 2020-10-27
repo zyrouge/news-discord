@@ -31,11 +31,13 @@ module.exports = ({
     console.log("Updated README.md");
 
     const tag = `v${version}`;
+    const logs = changes[version];
+    const releaseBody = logs.changes ? logs.changes : "Unknown";
     github.repos.createRelease({
         owner,
         repo,
         tag_name: tag,
-        body: changes[version] || "Unknown"
+        body: releaseBody
     });
     console.log(`Release created: ${tag}`);
 };

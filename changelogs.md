@@ -20,4 +20,5 @@ Done
 * Pusher Done (finally)# v1.1.42
 * Removed `git:push` from scripts# v1.1.43
 * Release Notes are now changelogs# v1.1.44
-* Moved `changelogs.json` from `docs` to `data`
+* Moved `changelogs.json` from `docs` to `data`# v1.1.45
+* Changelogs are not in proper json
