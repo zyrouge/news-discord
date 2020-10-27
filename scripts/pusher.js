@@ -4,7 +4,8 @@ const path = require("path");
 const chalk = require("chalk");
 const commandLineArgs = require("command-line-args");
 const { execSync } = require("child_process");
-const SimpleGit = require("simple-git");
+const _ = require("lodash");
+const inquirer = require("inquirer");
 
 const pkgpath = path.resolve("package.json");
 const pkg = require(pkgpath);
@@ -25,12 +26,20 @@ const options = [
 ];
 
 const info = chalk.cyanBright("INFO");
-const error = chalk.cyanBright("ERROR");
+const warn = chalk.yellowBright("WARN");
+const error = chalk.redBright("ERROR");
+
+const exec = (cmd) => execSync(cmd, { stdio: "pipe" }).toString();
 
 const update = async () => {
+    const GitVersion = exec("git --version");
+    const GitIsInstalled = GitVersion.trim().startsWith("git version");
+    if (!GitIsInstalled) throw new Error("Git is not installed!");
+
     const args = commandLineArgs(options, { argv: process.argv });
 
     const showOutput = !args["nooutput"];
+    if (!showOutput) console.log(`${warn} No outputs will be logged`);
     const Output = (text) => (showOutput && text ? console.log(text) : null);
 
     /* SemVer */
@@ -43,51 +52,76 @@ const update = async () => {
 
     fs.writeFileSync(pkgpath, JSON.stringify(pkg, undefined, 4));
     console.log(
-        `${info} ${chalk.blueBright`[SemVer]`} Version updated: ${chalk.bold.greenBright(
+        `${info} ${chalk.blueBright(
+            "[SemVer]"
+        )} Version updated: ${chalk.bold.greenBright(
             prevVer
-        )} -> ${chalk.bold.greenBright(pkg.version)}`
+        )} -> ${chalk.bold.greenBright(pkg.version)} ${chalk.gray(
+            `(${_.capitalize(inc)})`
+        )}`
     );
 
     /* Generate Docs */
     const ignoreDocs = !!args["nodocs"];
     if (!ignoreDocs) {
         console.log(
-            `${info} ${chalk.blueBright`[Docs]`} Generating Documentation`
+            `${info} ${chalk.blueBright("[Docs]")} Generating Documentation`
         );
-        const DocsOutput = execSync("npm run docs", { stdio: "pipe" });
-        Output(chalk.gray(`${DocsOutput}`));
+        const DocsOutput = exec("npm run docs");
+        Output(chalk.gray(DocsOutput));
     }
 
     /* git add */
     const gitAdd = args["add"] ? args["add"].join(" ") : ".";
     console.log(
-        `${info} ${chalk.blueBright`[Files]`} Git Add Files: ${chalk.greenBright(
-            gitAdd
-        )}`
+        `${info} ${chalk.blueBright(
+            "[Files]"
+        )} Git Add Files: ${chalk.greenBright(gitAdd)}`
     );
-    const GitAddOutput = execSync(`git add ${gitAdd}`);
-    Output(chalk.gray(`${GitAddOutput}`));
+    const GitAddOutput = exec(`git add ${gitAdd}`);
+    Output(chalk.gray(GitAddOutput));
 
     /* git commit */
-    const gitCommit = args["message"];
-    if (!gitCommit || !gitCommit.length) {
-        console.log(
-            `${error} ${chalk.blueBright`[Commit]`} No Commit Message was provided`
-        );
-        process.exit();
-    }
-    console.log(
-        `${info} ${chalk.blueBright`[Commit]`} Git Commit Message: ${chalk.greenBright(
-            gitCommit.join(" ")
-        )}`
+    let gitCommit = args["message"];
+    if (!gitCommit || !gitCommit.length)
+        gitCommit = (
+            (
+                await inquirer.prompt([
+                    {
+                        type: "input",
+                        name: "msg",
+                        message: "Enter a Commit Message:"
+                    }
+                ])
+            ).msg || "No information."
+        ).split(" ");
+
+    const changeLogs = exec(
+        "git log --branches --not --remotes --no-decorate --oneline"
     );
-    const GitCommitOutput = execSync(`git commit -m "${gitCommit.join(" ")}"`);
-    Output(chalk.gray(`${GitCommitOutput}`));
+
+    const commitMessage = [
+        gitCommit.join(" "),
+        "",
+        "Changes:",
+        changeLogs.split("\n")
+    ];
+    console.log(`${info} ${chalk.blueBright("[Commit]")} Git Commit Message:`);
+    console.log(chalk.greenBright(commitMessage.join("\n")));
+
+    const GitCommitOutput = exec(
+        `git commit ${commitMessage.map((msg) => `-m "${msg}"`).join(" ")}`
+    );
+    Output(chalk.gray(GitCommitOutput));
 
     /* git push */
-    console.log(`${info} ${chalk.blueBright`[Push]`} Pushing to GitHub`);
-    const GitPushOutput = execSync("git push");
-    Output(chalk.gray(`${GitPushOutput}`));
+    console.log(`${info} ${chalk.blueBright("[Push]")} Pushing to GitHub`);
+    const GitPushOutput = exec("git push");
+    Output(chalk.gray(GitPushOutput));
 };
 
-update();
+try {
+    update();
+} catch (err) {
+    console.log(`${error} ${err}`);
+}
