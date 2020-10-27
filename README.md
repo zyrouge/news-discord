@@ -86,6 +86,8 @@ $ yarn dev
 
 -   Before committing a Push (Make sure to fix SemVer conflicts)
 
+**NPM**
+
 ```console
 $ npm run push
 ```

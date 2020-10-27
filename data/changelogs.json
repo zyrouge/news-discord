@@ -1,1 +1,1 @@
-"{\n    \"1.1.45\": {\n        \"version\": \"1.1.45\",\n        \"semver\": \"v1.1.45\",\n        \"changes\": \"* Changelogs are not in proper json\"\n    }\n}"
+"\"{\\n    \\\"1.1.45\\\": {\\n        \\\"version\\\": \\\"1.1.45\\\",\\n        \\\"semver\\\": \\\"v1.1.45\\\",\\n        \\\"changes\\\": \\\"* Changelogs are not in proper json\\\"\\n    }\\n}\""
