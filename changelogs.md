@@ -7,4 +7,5 @@
 # v1.1.30
 * Checks# v1.1.31
 * Inquirer stucks on GitHub Push# v1.1.32
-* Change `confirm` to `list` in GitHub Push confirmation
+* Change `confirm` to `list` in GitHub Push confirmation# v1.1.33
+* Push to GitHub automatically
