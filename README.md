@@ -27,7 +27,7 @@ $ git clone https://github.com/zyrouge/news-discord.git
 $ npm install
 ```
 
-**YARN**
+**Yarn**
 
 ```console
 $ yarn add
@@ -45,7 +45,7 @@ $ yarn add
 $ npm start
 ```
 
-**YARN**
+**Yarn**
 
 ```console
 $ yarn start

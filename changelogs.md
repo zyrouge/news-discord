@@ -24,4 +24,5 @@ Done
 * Changelogs are not in proper json# v1.1.46
 * Change in readme# v1.1.47
 * YARN to Yarn
-* And Fixes some Typos
+* And Fixes some Typos# v1.1.48
+* YARN -> Yarn x2
