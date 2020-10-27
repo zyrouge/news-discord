@@ -31,3 +31,5 @@ Done
 * Fixes Malformed Changelogs
 # v1.1.52
 * Malformed Changelogs (md)
+# v1.1.53
+* Implemented a fix for malformed changelogs.md

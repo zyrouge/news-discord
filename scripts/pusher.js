@@ -98,7 +98,11 @@ const update = async () => {
 
     const changeLogsDir = path.resolve("changelogs.md");
     fs.ensureFileSync(changeLogsDir);
-    fs.appendFileSync(changeLogsDir, `\n# v${pkg.version}\n${changes}`);
+    const prevChangeLogsMD = fs.readFileSync(changeLogsDir);
+    fs.writeFileSync(
+        changeLogsDir,
+        `${prevChangeLogsMD}\n# v${pkg.version}\n${changes}`
+    );
 
     /* Generate Docs */
     const ignoreDocs = !!args["nodocs"];
