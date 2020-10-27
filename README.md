@@ -11,4 +11,4 @@
 
 [Click here](changelogs.md)
 
-#### Also read the `LICENSE` file
+#### Also read the [`LICENSE`](LICENSE) file
