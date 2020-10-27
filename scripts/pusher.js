@@ -141,7 +141,7 @@ const update = async () => {
     if (!gitCommit || !gitCommit.length) gitCommit = changes;
 
     console.log(`${info} ${chalk.blueBright("[Commit]")} Git Commit Message:`);
-    console.log(chalk.greenBright(changes), "\n");
+    console.log(chalk.greenBright(changes), "");
     await git.commit(changes);
 
     /* git push */
