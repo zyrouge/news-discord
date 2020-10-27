@@ -47,3 +47,6 @@
 # v1.1.54
 * Malformed Changelogs.md fixes
 
+
+# v1.1.55
+* Added `Igniter` which checks for latest update and ensures required files during **Production**

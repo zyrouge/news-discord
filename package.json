@@ -1,11 +1,12 @@
 {
     "name": "news-bot",
-    "version": "1.1.54",
+    "version": "1.1.55",
     "description": "",
     "main": "./build/index.js",
     "types": "./src/types.d.ts",
     "scripts": {
-        "start": "set \"NODE_ENV=production\" && node .",
+        "main": "node .",
+        "start": "set \"NODE_ENV=production\" && node ./scripts/ignition",
         "dev": "npm run build && set \"NODE_ENV=development\" && node .",
         "build": "tsc",
         "docs": "npx typedoc --out ./docs --readme README.md --json ./docs/docs.json --theme ./node_modules/typedoc-neo-theme/bin/default --includeVersion ./src && npx copy-files-from-to --config ./copy-files-from-to.json",
