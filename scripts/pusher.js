@@ -154,14 +154,11 @@ const update = async () => {
         {
             type: "confirm",
             message: "Push to GitHub?",
-            name: "push"
+            name: "pushtogh"
         }
     ]);
 
-    if (!pushToGh.push) {
-        console.log(`${warn} Git Push was aborted!`);
-        process.exit();
-    }
+    if (!pushToGh.pushtogh) return console.log(`${warn} Git Push was aborted!`);
 
     console.log(`${info} ${chalk.blueBright("[Push]")} Pushing to GitHub`);
     const GitPushOutput = exec("git push");
