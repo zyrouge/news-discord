@@ -112,7 +112,10 @@ const update = async () => {
         semver: `v${pkg.version}`,
         changes: changes
     };
-    fs.writeFileSync(changeLogsJSONDir, changeLogsJSON);
+    fs.writeFileSync(
+        changeLogsJSONDir,
+        JSON.stringify(changeLogsJSON, null, 4)
+    );
 
     /* git add */
     const gitAdd = args["add"] ? args["add"].join(" ") : ".";
@@ -147,18 +150,15 @@ const update = async () => {
     Output(chalk.gray(GitCommitOutput));
 
     /* git push */
-    const pushToGh = (
-        await inquirer.prompt([
-            {
-                type: "confirm",
-                message: "Push to GitHub?",
-                name: "push",
-                default: false
-            }
-        ])
-    ).push;
+    const pushToGh = await inquirer.prompt([
+        {
+            type: "confirm",
+            message: "Push to GitHub?",
+            name: "push"
+        }
+    ]);
 
-    if (!pushToGh) {
+    if (!pushToGh.push) {
         console.log(`${warn} Git Push was aborted!`);
         process.exit();
     }
