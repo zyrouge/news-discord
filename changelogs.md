@@ -17,4 +17,5 @@
 Done
 # v1.1.40
 * Bugger# v1.1.41
-* Pusher Done (finally)
+* Pusher Done (finally)# v1.1.42
+* Removed `git:push` from scripts

@@ -50,7 +50,6 @@ const update = async () => {
 
     const showOutput = !args["nooutput"];
     if (!showOutput) console.log(`${warn} No outputs will be logged`);
-    const Output = (text) => (showOutput && text ? console.log(text) : null);
 
     /* SemVer */
     let inc;
@@ -107,8 +106,7 @@ const update = async () => {
         console.log(
             `${info} ${chalk.blueBright("[Docs]")} Generating Documentation`
         );
-        const DocsOutput = await exec("npm run docs");
-        Output(chalk.gray(DocsOutput));
+        await exec("npm run docs");
     }
 
     /* Changelogs JSON */
@@ -133,8 +131,7 @@ const update = async () => {
             "[Files]"
         )} Git Add Files: ${chalk.greenBright(gitAdd)}`
     );
-    const GitAddOutput = await git.add(gitAdd);
-    Output(chalk.gray(GitAddOutput));
+    await git.add(gitAdd);
 
     /* git commit */
     let gitCommit = args["message"] ? args["message"].join(" ") : null;
