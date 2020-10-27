@@ -13,4 +13,5 @@
 * Switching to `package.json` scripts# v1.1.36
 * No more commit messages# v1.1.37
 * Simply push# v1.1.38
-* Testing Simple Git Output
+* Testing Simple Git Output# v1.1.39
+Done

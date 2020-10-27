@@ -141,10 +141,8 @@ const update = async () => {
     if (!gitCommit || !gitCommit.length) gitCommit = changes;
 
     console.log(`${info} ${chalk.blueBright("[Commit]")} Git Commit Message:`);
-    console.log(chalk.greenBright(changes));
-
-    const GitCommitOutput = await git.commit(changes);
-    Output(chalk.gray(JSON.stringify(GitCommitOutput)));
+    console.log(chalk.greenBright(changes), "\n");
+    await git.commit(changes);
 
     /* git push */
     const push = (
@@ -157,11 +155,14 @@ const update = async () => {
         ])
     ).push;
 
-    if (!push) return console.log(`${warn} Pushing to Github was cancelled`);
+    if (!push) {
+        console.log(`${warn} Pushing to Github was aborted`);
+        process.exit();
+    }
 
     console.log(`${info} ${chalk.blueBright("[Push]")} Pushing to GitHub`);
-    const GitPushOutput = await git.push();
-    Output(chalk.gray(JSON.stringify(GitPushOutput)));
+    await git.push();
+    process.exit();
 };
 
 try {
