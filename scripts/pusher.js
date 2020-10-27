@@ -3,7 +3,7 @@ const fs = require("fs-extra");
 const path = require("path");
 const chalk = require("chalk");
 const commandLineArgs = require("command-line-args");
-const { execSync } = require("child_process");
+const { exec: ExecuteCommand } = require("child_process");
 const _ = require("lodash");
 const inquirer = require("inquirer");
 
@@ -25,15 +25,22 @@ const options = [
         defaultOption: true
     }
 ];
+const util = require("util");
 
 const info = chalk.cyanBright("INFO");
 const warn = chalk.yellowBright("WARN");
 const error = chalk.redBright("ERROR");
 
-const exec = (cmd) => execSync(cmd, { stdio: "pipe" }).toString();
+const exec = (cmd) =>
+    new Promise(async (resolve, reject) => {
+        const exe = util.promisify(ExecuteCommand);
+        const { stdout, stderr } = await exe(cmd);
+        resolve(stdout);
+        reject(stderr);
+    });
 
 const update = async () => {
-    const GitVersion = exec("git --version");
+    const GitVersion = await exec("git --version");
     const GitIsInstalled = GitVersion.trim().startsWith("git version");
     if (!GitIsInstalled) throw new Error("Git is not installed!");
 
@@ -98,7 +105,7 @@ const update = async () => {
         console.log(
             `${info} ${chalk.blueBright("[Docs]")} Generating Documentation`
         );
-        const DocsOutput = exec("npm run docs");
+        const DocsOutput = await exec("npm run docs");
         Output(chalk.gray(DocsOutput));
     }
 
@@ -124,7 +131,7 @@ const update = async () => {
             "[Files]"
         )} Git Add Files: ${chalk.greenBright(gitAdd)}`
     );
-    const GitAddOutput = exec(`git add ${gitAdd}`);
+    const GitAddOutput = await exec(`git add ${gitAdd}`);
     Output(chalk.gray(GitAddOutput));
 
     /* git commit */
@@ -146,12 +153,12 @@ const update = async () => {
         )} Git Commit Message: ${chalk.greenBright(gitCommit)}`
     );
 
-    const GitCommitOutput = exec(`git commit -m "${gitCommit}"`);
+    const GitCommitOutput = await exec(`git commit -m "${gitCommit}"`);
     Output(chalk.gray(GitCommitOutput));
 
     /* git push */
     console.log(`${info} ${chalk.blueBright("[Push]")} Pushing to GitHub`);
-    const GitPushOutput = exec("git push");
+    const GitPushOutput = await exec("git push");
     Output(chalk.gray(GitPushOutput));
 };
 
