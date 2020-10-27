@@ -78,8 +78,6 @@ const update = async () => {
     );
 
     /* Changelogs */
-    const changeLogsDir = path.resolve("changelogs.md");
-    fs.ensureFileSync(changeLogsDir);
     const changes = (
         await inquirer.prompt([
             {
@@ -89,6 +87,9 @@ const update = async () => {
             }
         ])
     ).changes;
+
+    const changeLogsDir = path.resolve("changelogs.md");
+    fs.ensureFileSync(changeLogsDir);
     fs.appendFileSync(changeLogsDir, `# v${pkg.version}\n${changes}`);
 
     /* Generate Docs */
@@ -100,6 +101,18 @@ const update = async () => {
         const DocsOutput = exec("npm run docs");
         Output(chalk.gray(DocsOutput));
     }
+
+    /* Changelogs JSON */
+    const changeLogsJSONDir = path.resolve("docs", "changelogs.json");
+    fs.ensureFileSync(changeLogsJSONDir);
+    let changeLogsJSON = fs.readFileSync(changeLogsJSONDir).toString();
+    if (!changeLogsJSON) changeLogsJSON = {};
+    changeLogsJSON[pkg.version] = {
+        version: pkg.version,
+        semver: `v${pkg.version}`,
+        changes: changes
+    };
+    fs.writeFileSync(changeLogsJSONDir, changeLogsJSON);
 
     /* git add */
     const gitAdd = args["add"] ? args["add"].join(" ") : ".";
