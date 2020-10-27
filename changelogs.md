@@ -25,4 +25,5 @@ Done
 * Change in readme# v1.1.47
 * YARN to Yarn
 * And Fixes some Typos# v1.1.48
-* YARN -> Yarn x2
+* YARN -> Yarn x2# v1.1.49
+* Actually another process for Development

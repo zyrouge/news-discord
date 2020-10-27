@@ -53,7 +53,14 @@ $ yarn start
 
 ## Development
 
--   Same procedure as above
+-   Fork this Repo
+
+-   Cloning the fork (Rename `username` and `repo`)
+
+```console
+$ git clone https://github.com/username/repo.git#bot
+```
+
 -   Install Development Packages
 
 **NPM**
@@ -68,7 +75,9 @@ $ npm install --save-dev
 $ yarn add --dev
 ```
 
--   Create `.env.development` and fill required credentials like in [`.env.example`](.env.example)
+-   Fill required credentials in [`.env.example`](.env.example) and rename it to `.env.development`
+
+-   Change necessary things in [`settings.yaml`](settings.yaml)
 
 -   Running Development Bot (Auto builds and runs)
 
