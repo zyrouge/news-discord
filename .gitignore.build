@@ -1,6 +1,0 @@
-node_modules
-package-lock.json
-copy-files-from-to.json
-tsconfig.json
-docs
-src
