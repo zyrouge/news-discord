@@ -101,7 +101,7 @@ const update = async () => {
     const prevChangeLogsMD = fs.readFileSync(changeLogsDir);
     fs.writeFileSync(
         changeLogsDir,
-        `${prevChangeLogsMD}\n# v${pkg.version}\n${changes}`
+        `${prevChangeLogsMD}\n# v${pkg.version}\n${changes}\n`
     );
 
     /* Generate Docs */
