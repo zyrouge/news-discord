@@ -8,7 +8,8 @@ module.exports = ({
     pusher,
     github,
     owner,
-    repo
+    repo,
+    changes
 }) => {
     fs.appendFileSync(
         "./README.md",
@@ -33,7 +34,8 @@ module.exports = ({
     github.repos.createRelease({
         owner,
         repo,
-        tag_name: tag
+        tag_name: tag,
+        body: changes[version] || "Unknown"
     });
     console.log(`Release created: ${tag}`);
 };

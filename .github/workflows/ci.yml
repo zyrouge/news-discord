@@ -35,6 +35,7 @@ jobs:
                   script: |
                       const script = require(`${process.env.GITHUB_WORKSPACE}/scripts/workflow.js`);
                       const pkg = require(`${process.env.GITHUB_WORKSPACE}/package.json`);
+                      const changes = require(`${process.env.GITHUB_WORKSPACE}/docs/changelogs.json`);
                       script({
                         github: github,
                         owner: context.repo.owner,
@@ -43,7 +44,8 @@ jobs:
                         version: pkg.version, 
                         sha: process.env.GITHUB_SHA, 
                         event: process.env.GITHUB_EVENT_NAME,
-                        pusher: context.payload.pusher
+                        pusher: context.payload.pusher,
+                        changes: changes
                       });
 
             - name: Rename gitignore
