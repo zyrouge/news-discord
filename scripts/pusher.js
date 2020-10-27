@@ -144,12 +144,24 @@ const update = async () => {
     console.log(chalk.greenBright(changes));
 
     const GitCommitOutput = await git.commit(changes);
-    Output(chalk.gray(GitCommitOutput));
+    Output(chalk.gray(JSON.stringify(GitCommitOutput)));
 
     /* git push */
+    const push = (
+        await inquirer.prompt([
+            {
+                type: "confirm",
+                message: "Push to GitHub?",
+                name: "push"
+            }
+        ])
+    ).push;
+
+    if (!push) return console.log(`${warn} Pushing to Github was cancelled`);
+
     console.log(`${info} ${chalk.blueBright("[Push]")} Pushing to GitHub`);
     const GitPushOutput = await git.push();
-    Output(chalk.gray(GitPushOutput));
+    Output(chalk.gray(JSON.stringify(GitPushOutput)));
 };
 
 try {
