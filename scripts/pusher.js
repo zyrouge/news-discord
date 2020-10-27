@@ -4,6 +4,7 @@ const path = require("path");
 const chalk = require("chalk");
 const commandLineArgs = require("command-line-args");
 const { execSync } = require("child_process");
+const SimpleGit = require("simple-git");
 
 const pkgpath = path.resolve("package.json");
 const pkg = require(pkgpath);
@@ -13,6 +14,7 @@ const options = [
     { name: "minor", type: Boolean },
     { name: "major", type: Boolean },
     { name: "nodocs", type: Boolean },
+    { name: "nooutput", type: Boolean },
     {
         name: "message",
         alias: "m",
@@ -27,6 +29,9 @@ const error = chalk.cyanBright("ERROR");
 
 const update = async () => {
     const args = commandLineArgs(options, { argv: process.argv });
+
+    const showOutput = !args["nooutput"];
+    const Output = (text) => (showOutput && text ? console.log(text) : null);
 
     /* SemVer */
     let inc = "patch";
@@ -49,7 +54,8 @@ const update = async () => {
         console.log(
             `${info} ${chalk.blueBright`[Docs]`} Generating Documentation`
         );
-        execSync(`npm run docs`);
+        const DocsOutput = execSync("npm run docs", { stdio: "pipe" });
+        Output(chalk.gray(`${DocsOutput}`));
     }
 
     /* git add */
@@ -59,7 +65,8 @@ const update = async () => {
             gitAdd
         )}`
     );
-    execSync(`git add ${gitAdd}`);
+    const GitAddOutput = execSync(`git add ${gitAdd}`);
+    Output(chalk.gray(`${GitAddOutput}`));
 
     /* git commit */
     const gitCommit = args["message"];
@@ -74,11 +81,13 @@ const update = async () => {
             gitCommit.join(" ")
         )}`
     );
-    execSync(`git commit -m "${gitCommit.join(" ")}"`);
+    const GitCommitOutput = execSync(`git commit -m "${gitCommit.join(" ")}"`);
+    Output(chalk.gray(`${GitCommitOutput}`));
 
     /* git push */
     console.log(`${info} ${chalk.blueBright`[Push]`} Pushing to GitHub`);
-    execSync(`git push`);
+    const GitPushOutput = execSync("git push");
+    Output(chalk.gray(`${GitPushOutput}`));
 };
 
 update();
