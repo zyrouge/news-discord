@@ -1,7 +1,7 @@
 {
-    "1.1.34": {
-        "version": "1.1.34",
-        "semver": "v1.1.34",
-        "changes": "* Use async"
+    "1.1.35": {
+        "version": "1.1.35",
+        "semver": "v1.1.35",
+        "changes": "* Switching to `package.json` scripts"
     }
 }
