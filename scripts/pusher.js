@@ -150,15 +150,18 @@ const update = async () => {
     Output(chalk.gray(GitCommitOutput));
 
     /* git push */
-    const pushToGh = await inquirer.prompt([
-        {
-            type: "confirm",
-            message: "Push to GitHub?",
-            name: "pushtogh"
-        }
-    ]);
+    const pushToGh = (
+        await inquirer.prompt([
+            {
+                type: "list",
+                message: "Push to GitHub?",
+                name: "pushtogh",
+                choices: ["Yes", "No"]
+            }
+        ])
+    ).pushtogh;
 
-    if (!pushToGh.pushtogh) return console.log(`${warn} Git Push was aborted!`);
+    if (!pushToGh === "No") return console.log(`${warn} Git Push was aborted!`);
 
     console.log(`${info} ${chalk.blueBright("[Push]")} Pushing to GitHub`);
     const GitPushOutput = exec("git push");

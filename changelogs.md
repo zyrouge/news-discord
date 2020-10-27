@@ -6,4 +6,5 @@
 * Fixes `changelogs.json` getting yeeted by `typedoc`
 # v1.1.30
 * Checks# v1.1.31
-* Inquirer stucks on GitHub Push
+* Inquirer stucks on GitHub Push# v1.1.32
+* Change `confirm` to `list` in GitHub Push confirmation
