@@ -98,39 +98,44 @@ const update = async () => {
     Output(chalk.gray(GitAddOutput));
 
     /* git commit */
-    let gitCommit = args["message"];
+    let gitCommit = args["message"] ? args["message"].join(" ") : null;
     if (!gitCommit || !gitCommit.length)
         gitCommit = (
-            (
-                await inquirer.prompt([
-                    {
-                        type: "input",
-                        name: "msg",
-                        message: "Enter a Commit Message:"
-                    }
-                ])
-            ).msg || "No information."
-        ).split(" ");
+            await inquirer.prompt([
+                {
+                    type: "input",
+                    name: "msg",
+                    message: "Enter a Commit Message:"
+                }
+            ])
+        ).msg;
 
-    const changeLogs = exec(
-        "git log --branches --not --remotes --no-decorate --oneline"
+    console.log(
+        `${info} ${chalk.blueBright(
+            "[Commit]"
+        )} Git Commit Message: ${chalk.greenBright(gitCommit)}`
     );
 
-    const commitMessage = [
-        gitCommit.join(" "),
-        "",
-        "Changes:",
-        changeLogs.split("\n")
-    ];
-    console.log(`${info} ${chalk.blueBright("[Commit]")} Git Commit Message:`);
-    console.log(chalk.greenBright(commitMessage.join("\n")));
-
-    const GitCommitOutput = exec(
-        `git commit ${commitMessage.map((msg) => `-m "${msg}"`).join(" ")}`
-    );
+    const GitCommitOutput = exec(`git commit -m "${gitCommit}"`);
     Output(chalk.gray(GitCommitOutput));
 
     /* git push */
+    const pushToGh = (
+        await inquirer.prompt([
+            {
+                type: "confirm",
+                message: "Push to GitHub?",
+                name: "push",
+                default: false
+            }
+        ])
+    ).push;
+
+    if (!pushToGh) {
+        console.log(`${warn} Git Push was aborted!`);
+        process.exit();
+    }
+
     console.log(`${info} ${chalk.blueBright("[Push]")} Pushing to GitHub`);
     const GitPushOutput = exec("git push");
     Output(chalk.gray(GitPushOutput));
