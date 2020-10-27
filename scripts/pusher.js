@@ -6,9 +6,11 @@ const commandLineArgs = require("command-line-args");
 const { exec: ExecuteCommand } = require("child_process");
 const _ = require("lodash");
 const inquirer = require("inquirer");
+const simpleGit = require("simple-git");
 
 const pkgpath = path.resolve("package.json");
 const pkg = require(pkgpath);
+const git = simpleGit();
 
 const options = [
     { name: "add", alias: "a", type: String, multiple: true },
@@ -131,34 +133,22 @@ const update = async () => {
             "[Files]"
         )} Git Add Files: ${chalk.greenBright(gitAdd)}`
     );
-    const GitAddOutput = await exec(`git add ${gitAdd}`);
+    const GitAddOutput = await git.add(gitAdd);
     Output(chalk.gray(GitAddOutput));
 
     /* git commit */
     let gitCommit = args["message"] ? args["message"].join(" ") : null;
-    if (!gitCommit || !gitCommit.length)
-        gitCommit = (
-            await inquirer.prompt([
-                {
-                    type: "input",
-                    name: "msg",
-                    message: "Enter a Commit Message:"
-                }
-            ])
-        ).msg;
+    if (!gitCommit || !gitCommit.length) gitCommit = changes;
 
-    console.log(
-        `${info} ${chalk.blueBright(
-            "[Commit]"
-        )} Git Commit Message: ${chalk.greenBright(gitCommit)}`
-    );
+    console.log(`${info} ${chalk.blueBright("[Commit]")} Git Commit Message:`);
+    console.log(chalk.greenBright(changes));
 
-    const GitCommitOutput = await exec(`git commit -m "${gitCommit}"`);
+    const GitCommitOutput = await git.commit(changes);
     Output(chalk.gray(GitCommitOutput));
 
     /* git push */
     console.log(`${info} ${chalk.blueBright("[Push]")} Pushing to GitHub`);
-    const GitPushOutput = await exec("npm run git:push");
+    const GitPushOutput = await git.push("npm run git:push");
     Output(chalk.gray(GitPushOutput));
 };
 

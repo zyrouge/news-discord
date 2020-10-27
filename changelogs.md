@@ -10,4 +10,5 @@
 * Change `confirm` to `list` in GitHub Push confirmation# v1.1.33
 * Push to GitHub automatically# v1.1.34
 * Use async# v1.1.35
-* Switching to `package.json` scripts
+* Switching to `package.json` scripts# v1.1.36
+* No more commit messages
