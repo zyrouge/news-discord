@@ -154,3 +154,6 @@
 # v1.1.65
 * `Changelogs.md` -> `Changelog.md`
 * `Changelogs.json` -> `Changelog.json`
+
+# v1.1.66
+* Set `private` in `package.json`

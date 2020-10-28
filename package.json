@@ -1,9 +1,10 @@
 {
     "name": "news-bot",
-    "version": "1.1.65",
+    "version": "1.1.66",
     "description": "",
     "main": "./build/index.js",
     "types": "./src/types.d.ts",
+    "private": true,
     "scripts": {
         "main": "node .",
         "start": "set \"NODE_ENV=production\" && node ./scripts/ignition",
