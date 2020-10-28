@@ -1,6 +1,6 @@
 {
     "name": "news-bot",
-    "version": "1.1.58",
+    "version": "1.1.59",
     "description": "",
     "main": "./build/index.js",
     "types": "./src/types.d.ts",

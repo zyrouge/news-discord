@@ -129,3 +129,6 @@
 # v1.1.58
 * Removed `copy-files-from-to`
 
+
+# v1.1.59
+* Bug Fixes

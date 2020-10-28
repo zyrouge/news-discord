@@ -55,7 +55,7 @@ const update = async () => {
         .writeFile(pkgpath, JSON.stringify(pkg, undefined, 4))
         .catch((err) => {
             pkgVersionLog.fail(
-                `Could not update package.json: ${chalk.gray(err)}`
+                `Could not update package.json: ${chalk.redBright(err)}`
             );
         });
     pkgVersionLog.succeed("Updated package.json");
@@ -82,8 +82,8 @@ const update = async () => {
             `${prevChangeLogsMD}\n# v${pkg.version}\n${changes}\n`
         )
         .catch((err) => {
-            pkgVersionLog.fail(
-                `Could not update changelogs.md: ${chalk.gray(err)}`
+            changeLogsLog.fail(
+                `Could not update changelogs.md: ${chalk.redBright(err)}`
             );
         });
     changeLogsLog.succeed("Updated changelogs.md");
@@ -102,8 +102,8 @@ const update = async () => {
     await fs
         .writeFile(changeLogsJSONDir, JSON.stringify(changeLogsJSON, null, 4))
         .catch((err) => {
-            pkgVersionLog.fail(
-                `Could not update changelogs.json: ${chalk.gray(err)}`
+            changeLogsJSONLog.fail(
+                `Could not update changelogs.json: ${chalk.redBright(err)}`
             );
         });
     changeLogsJSONLog.succeed("Updated changelogs.json");
@@ -114,25 +114,30 @@ const update = async () => {
         denDocsLog.start();
         await exec("npm run docs").catch((err) => {
             denDocsLog.fail(
-                `Could not generate Documentation: ${chalk.gray(err)}`
+                `Could not generate Documentation: ${chalk.redBright(err)}`
             );
         });
         await fs.createFile(path.resolve("docs", ".nojekyll"));
         denDocsLog.succeed("Documentation generated");
-    }
+    } else
+        console.log(
+            `${logSymbols.warning} Skipping Documentation: ${chalk.redBright(
+                "--nodocs"
+            )}`
+        );
 
     /* git add */
     const gitLog = Ora("Adding files to commit").start();
     await git.add(".").catch((err) => {
-        pkgVersionLog.fail(`Could not add files to git: ${chalk.gray(err)}`);
+        gitLog.fail(`Could not add files to git: ${chalk.redBright(err)}`);
     });
 
     /* git commit */
     gitLog.text = "Committing the changes";
     await git.commit(changes).catch((err) => {
-        pkgVersionLog.fail(`Could not commit the changes: ${chalk.gray(err)}`);
+        gitLog.fail(`Could not commit the changes: ${chalk.redBright(err)}`);
     });
-    gitCommitLog.succeed("Registered the changes");
+    gitLog.succeed("Registered the changes");
 
     /* git push */
     const { push } = await inquirer.prompt([
@@ -150,7 +155,7 @@ const update = async () => {
 
     const gitPushLog = Ora("Pushing to GitHub").start();
     await git.push().catch((err) => {
-        pkgVersionLog.fail(`Could not push the changes: ${chalk.gray(err)}`);
+        gitPushLog.fail(`Could not push the changes: ${chalk.redBright(err)}`);
     });
     gitPushLog.succeed("Pushed to GitHub");
 
