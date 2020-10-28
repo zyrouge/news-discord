@@ -117,3 +117,14 @@ $ yarn push
 ## License
 
 [Click here](LICENSE)
+
+
+## Production Code
+This is a automatic build of [`bot`](https://github.com/zyrouge/news-discord/tree/bot) branch using Github Actions
+## Build Info
+* Runner ID - `github_31029892-87bd-462a-954f-bbc7577f1090`
+* Event - `push`
+* Version - `1.1.60`
+* Commit SHA - `95e9d09b405ddd8f7f47aa7b3c639cfe3915b84a`
+* Pusher: `zyrouge`
+* Time of Built: **10/28/2020, 03:38:43 (IST)**
