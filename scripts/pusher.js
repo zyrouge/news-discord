@@ -2,36 +2,17 @@ const semver = require("semver");
 const fs = require("fs-extra");
 const path = require("path");
 const chalk = require("chalk");
-const commandLineArgs = require("command-line-args");
+const logSymbols = require("log-symbols");
 const { exec: ExecuteCommand } = require("child_process");
 const _ = require("lodash");
 const inquirer = require("inquirer");
 const simpleGit = require("simple-git");
+const Ora = require("ora");
+const util = require("util");
 
 const pkgpath = path.resolve("package.json");
 const pkg = require(pkgpath);
 const git = simpleGit();
-
-const options = [
-    { name: "add", alias: "a", type: String, multiple: true },
-    { name: "patch", type: Boolean },
-    { name: "minor", type: Boolean },
-    { name: "major", type: Boolean },
-    { name: "nodocs", type: Boolean },
-    { name: "nooutput", type: Boolean },
-    {
-        name: "message",
-        alias: "m",
-        type: String,
-        multiple: true,
-        defaultOption: true
-    }
-];
-const util = require("util");
-
-const info = chalk.cyanBright("INFO");
-const warn = chalk.yellowBright("WARN");
-const error = chalk.redBright("ERROR");
 
 const exec = (cmd) =>
     new Promise(async (resolve, reject) => {
@@ -42,48 +23,42 @@ const exec = (cmd) =>
     });
 
 const update = async () => {
+    const GitCheckLog = Ora("Checking for Git").start();
     const GitVersion = await exec("git --version");
     const GitIsInstalled = GitVersion.trim().startsWith("git version");
-    if (!GitIsInstalled) throw new Error("Git is not installed!");
-
-    const args = commandLineArgs(options, { argv: process.argv });
-
-    const showOutput = !args["nooutput"];
-    if (!showOutput) console.log(`${warn} No outputs will be logged`);
+    if (!GitIsInstalled) return GitCheckLog.fail("Git is not installed");
+    else GitCheckLog.succeed("Git is installed");
 
     /* SemVer */
-    let inc;
-    if (args["patch"]) inc = "patch";
-    else if (args["minor"]) inc = "minor";
-    else if (args["major"]) inc = "major";
-
-    let promptInc = !inc
-        ? await inquirer.prompt([
-              {
-                  type: "list",
-                  name: "inc",
-                  message: "Select next Version:",
-                  choices: ["Patch", "Minor", "Major"]
-              }
-          ])
-        : null;
-
-    if (promptInc) inc = promptInc.inc.toLowerCase();
-    if (!inc) throw new Error("No semver update was received.");
+    const { inc } = await inquirer.prompt([
+        {
+            type: "list",
+            name: "inc",
+            message: "Select next Version:",
+            choices: ["Patch", "Minor", "Major"]
+        }
+    ]);
 
     const prevVer = pkg.version;
-    pkg.version = semver.inc(prevVer, inc);
+    pkg.version = semver.inc(prevVer, inc.toLowerCase());
 
-    fs.writeFileSync(pkgpath, JSON.stringify(pkg, undefined, 4));
     console.log(
-        `${info} ${chalk.blueBright(
-            "[SemVer]"
-        )} Version updated: ${chalk.bold.greenBright(
+        `${logSymbols.info} Version updated: ${chalk.bold.greenBright(
             prevVer
         )} -> ${chalk.bold.greenBright(pkg.version)} ${chalk.gray(
             `(${_.capitalize(inc)})`
         )}`
     );
+
+    const pkgVersionLog = Ora("Writing version to package.json").start();
+    await fs
+        .writeFile(pkgpath, JSON.stringify(pkg, undefined, 4))
+        .catch((err) => {
+            pkgVersionLog.fail(
+                `Could not update package.json: ${chalk.gray(err)}`
+            );
+        });
+    pkgVersionLog.succeed("Updated package.json");
 
     /* Changelogs */
     const changes = (
@@ -96,26 +71,27 @@ const update = async () => {
         ])
     ).changes;
 
+    const changeLogsLog = Ora("Writing changes to changelogs.md").start();
     const changeLogsDir = path.resolve("changelogs.md");
-    fs.ensureFileSync(changeLogsDir);
-    const prevChangeLogsMD = fs.readFileSync(changeLogsDir);
-    fs.writeFileSync(
-        changeLogsDir,
-        `${prevChangeLogsMD}\n# v${pkg.version}\n${changes}\n`
-    );
+    await fs.ensureFile(changeLogsDir);
 
-    /* Generate Docs */
-    const ignoreDocs = !!args["nodocs"];
-    if (!ignoreDocs) {
-        console.log(
-            `${info} ${chalk.blueBright("[Docs]")} Generating Documentation`
-        );
-        await exec("npm run docs");
-    }
+    const prevChangeLogsMD = await fs.readFile(changeLogsDir);
+    await fs
+        .writeFile(
+            changeLogsDir,
+            `${prevChangeLogsMD}\n# v${pkg.version}\n${changes}\n`
+        )
+        .catch((err) => {
+            pkgVersionLog.fail(
+                `Could not update changelogs.md: ${chalk.gray(err)}`
+            );
+        });
+    changeLogsLog.succeed("Updated changelogs.md");
 
     /* Changelogs JSON */
+    const changeLogsJSONLog = Ora("Writing changes to changelogs.json").start();
     const changeLogsJSONDir = path.resolve("data", "changelogs.json");
-    fs.ensureFileSync(changeLogsJSONDir);
+    await fs.ensureFile(changeLogsJSONDir);
     let changeLogsJSON = fs.readFileSync(changeLogsJSONDir).toString();
     changeLogsJSON = changeLogsJSON.length ? JSON.parse(changeLogsJSON) : {};
     changeLogsJSON[pkg.version] = {
@@ -123,51 +99,66 @@ const update = async () => {
         semver: `v${pkg.version}`,
         changes: changes
     };
-    fs.writeFileSync(
-        changeLogsJSONDir,
-        JSON.stringify(changeLogsJSON, null, 4)
-    );
+    await fs
+        .writeFile(changeLogsJSONDir, JSON.stringify(changeLogsJSON, null, 4))
+        .catch((err) => {
+            pkgVersionLog.fail(
+                `Could not update changelogs.json: ${chalk.gray(err)}`
+            );
+        });
+    changeLogsJSONLog.succeed("Updated changelogs.json");
 
-    /* git add */
-    const gitAdd = args["add"] ? args["add"].join(" ") : ".";
-    console.log(
-        `${info} ${chalk.blueBright(
-            "[Files]"
-        )} Git Add Files: ${chalk.greenBright(gitAdd)}`
-    );
-    await git.add(gitAdd);
-
-    /* git commit */
-    let gitCommit = args["message"] ? args["message"].join(" ") : null;
-    if (!gitCommit || !gitCommit.length) gitCommit = changes;
-
-    console.log(`${info} ${chalk.blueBright("[Commit]")} Git Commit Message:`);
-    console.log(chalk.greenBright(changes));
-    await git.commit(changes);
-
-    /* git push */
-    const push = (
-        await inquirer.prompt([
-            {
-                type: "confirm",
-                message: "Push to GitHub?",
-                name: "push"
-            }
-        ])
-    ).push;
-
-    if (!push) {
-        console.log(`${warn} Pushing to Github was aborted`);
-        process.exit();
+    /* Generate Docs */
+    if (!process.argv.includes("--no-docs")) {
+        const denDocsLog = Ora("Generating Documentation");
+        denDocsLog.start();
+        await exec("npm run docs").catch((err) => {
+            denDocsLog.fail(
+                `Could not generate Documentation: ${chalk.gray(err)}`
+            );
+        });
+        await fs.createFile(path.resolve("docs", ".nojekyll"));
+        denDocsLog.succeed("Documentation generated");
     }
 
-    console.log(`${info} ${chalk.blueBright("[Push]")} Pushing to GitHub`);
-    await git.push();
+    /* git add */
+    const gitLog = Ora("Adding files to commit").start();
+    await git.add(".").catch((err) => {
+        pkgVersionLog.fail(`Could not add files to git: ${chalk.gray(err)}`);
+    });
+
+    /* git commit */
+    gitLog.text = "Committing the changes";
+    await git.commit(changes).catch((err) => {
+        pkgVersionLog.fail(`Could not commit the changes: ${chalk.gray(err)}`);
+    });
+    gitCommitLog.succeed("Registered the changes");
+
+    /* git push */
+    const { push } = await inquirer.prompt([
+        {
+            type: "confirm",
+            message: "Push to GitHub?",
+            name: "push"
+        }
+    ]);
+
+    if (!push)
+        return console.log(
+            `${logSymbols.warning} Pushing to Github was aborted`
+        );
+
+    const gitPushLog = Ora("Pushing to GitHub").start();
+    await git.push().catch((err) => {
+        pkgVersionLog.fail(`Could not push the changes: ${chalk.gray(err)}`);
+    });
+    gitPushLog.succeed("Pushed to GitHub");
+
     process.exit();
 };
 
 try {
     update();
 } catch (err) {
-    console.log(`${error} ${err}`);
+    console.log(`${logSymbols.error} ${chalk.redBright(err)}`);
 }

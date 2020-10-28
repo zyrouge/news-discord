@@ -119,3 +119,13 @@
 
 # v1.1.56
 * Fixed linebreaks in changelogs.md
+
+# v1.1.57
+* Switching to `log-symbols` and `ora`
+
+# v1.1.58
+* Removed `copy-files-from-to`
+
+# v1.1.58
+* Removed `copy-files-from-to`
+

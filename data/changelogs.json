@@ -28,5 +28,15 @@
         "version": "1.1.56",
         "semver": "v1.1.56",
         "changes": "* Fixed linebreaks in changelogs.md"
+    },
+    "1.1.57": {
+        "version": "1.1.57",
+        "semver": "v1.1.57",
+        "changes": "* Switching to `log-symbols` and `ora`"
+    },
+    "1.1.58": {
+        "version": "1.1.58",
+        "semver": "v1.1.58",
+        "changes": "* Removed `copy-files-from-to`\r\n"
     }
 }
