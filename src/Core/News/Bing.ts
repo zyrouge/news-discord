@@ -64,7 +64,7 @@ export class BingManager {
             return this.hot;
 
         const startTime = Date.now();
-        Logger.log("Updating Bing Headlines...");
+        const HeadlinesLog = Logger.Ora("Updating Bing Headlines...").start();
 
         const ep =
             '/search?q=World&nvaug=[NewsVertical+Category="rt_World"]&FORM=NSBABR';
@@ -118,7 +118,9 @@ export class BingManager {
         }
         this.embeds = this.createPages(this.hot);
 
-        Logger.log(`Updated Bing Headlines in ${Date.now() - startTime}ms`);
+        HeadlinesLog.succeed(
+            `Updated Bing Headlines in ${Date.now() - startTime}ms`
+        );
         this.lastUpdated = startTime;
     }
 

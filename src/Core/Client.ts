@@ -85,12 +85,9 @@ export class Client {
     }
 
     async initialize() {
-        const EventLoadLog = Logger.Ora({
-            text: `Loading Events from ${Logger.chalk.underline(
-                this.options.events
-            )}`,
-            prefixText: Logger.time
-        }).start();
+        const EventLoadLog = Logger.Ora(
+            `Loading Events from ${Logger.chalk.underline(this.options.events)}`
+        ).start();
 
         const eventFiles = await fs.readdir(this.options.events);
         for (const file of eventFiles) {
@@ -102,12 +99,11 @@ export class Client {
         }
         EventLoadLog.succeed(`${eventFiles.length} Events has been loaded`);
 
-        const CommandLoadLog = Logger.Ora({
-            text: `Loading Commands from ${Logger.chalk.underline(
+        const CommandLoadLog = Logger.Ora(
+            `Loading Commands from ${Logger.chalk.underline(
                 this.options.events
-            )}`,
-            prefixText: Logger.time
-        }).start();
+            )}`
+        ).start();
         const commandFiles = await fs.readdir(this.options.commands);
         for (const file of commandFiles) {
             this.commander.load(file);

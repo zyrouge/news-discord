@@ -136,3 +136,7 @@
 # v1.1.60
 * Now using Symbols instead of text in Logger
 * Logs are now less spammy
+
+# v1.1.61
+* Minor changes in Logger
+* QoL

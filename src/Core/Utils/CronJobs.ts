@@ -92,12 +92,13 @@ export class CronJobs {
 
     async run(isSecondRun: boolean = false) {
         const started = Date.now();
+        const CronLog = Logger.Ora(`Doing CronJobs (#${JobsCount})`).start();
 
         await this.saveBingNewsToDatabase();
         if (isSecondRun) await this.updateGuildNewsChannels();
 
         JobsCount = JobsCount + 1;
-        Logger.log(
+        CronLog.succeed(
             `Completed CronJobs (#${JobsCount}) in ${Date.now() - started}ms`
         );
     }

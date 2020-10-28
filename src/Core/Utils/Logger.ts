@@ -83,8 +83,14 @@ export class Logger {
         return chalk;
     }
 
-    static get Ora() {
-        return Ora;
+    static Ora(opts: string | Ora.Options) {
+        if (typeof opts === "string")
+            return Ora({
+                text: opts,
+                prefixText: this.time
+            });
+
+        return Ora(opts);
     }
 
     static get symbols() {
