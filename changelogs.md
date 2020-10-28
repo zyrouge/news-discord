@@ -144,3 +144,6 @@
 # v1.1.62
 * Removed `copyfiles`
 * Changed `license` in `package.json`
+
+# v1.1.63
+* Changed LICENSE `GPL-3.0+` to `GPL-3.0`
