@@ -85,30 +85,39 @@ export class Client {
     }
 
     async initialize() {
-        Logger.log(
-            `Loading Events from ${Logger.chalk.underline(this.options.events)}`
-        );
+        const EventLoadLog = Logger.Ora({
+            text: `Loading Events from ${Logger.chalk.underline(
+                this.options.events
+            )}`,
+            prefixText: Logger.time
+        }).start();
+
         const eventFiles = await fs.readdir(this.options.events);
         for (const file of eventFiles) {
             const name = file.split(".")[0];
             const event: $Event = require(path.join(this.options.events, file))
                 .default;
             this.bot.on(name, (...args: any) => event.execute(this, ...args));
-            Logger.debug(`Event loaded: ${Logger.chalk.underline(file)}`);
+            EventLoadLog.text = `Event loaded: ${Logger.chalk.underline(file)}`;
         }
+        EventLoadLog.succeed(`${eventFiles.length} Events has been loaded`);
 
-        Logger.log(
-            `Loading Commands from ${Logger.chalk.underline(
+        const CommandLoadLog = Logger.Ora({
+            text: `Loading Commands from ${Logger.chalk.underline(
                 this.options.events
-            )}`
-        );
+            )}`,
+            prefixText: Logger.time
+        }).start();
         const commandFiles = await fs.readdir(this.options.commands);
         for (const file of commandFiles) {
             this.commander.load(file);
-            Logger.debug(
-                `Command loaded: ${Logger.chalk.underline(file.split(".")[0])}`
-            );
+            CommandLoadLog.text = `Command loaded: ${Logger.chalk.underline(
+                file.split(".")[0]
+            )}`;
         }
+        CommandLoadLog.succeed(
+            `${commandFiles.length} Commands has been loaded`
+        );
     }
 
     async finalize() {

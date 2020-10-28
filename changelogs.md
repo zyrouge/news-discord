@@ -132,3 +132,7 @@
 
 # v1.1.59
 * Bug Fixes
+
+# v1.1.60
+* Now using Symbols instead of text in Logger
+* Logs are now less spammy

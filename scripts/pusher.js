@@ -54,7 +54,7 @@ const update = async () => {
     await fs
         .writeFile(pkgpath, JSON.stringify(pkg, undefined, 4))
         .catch((err) => {
-            pkgVersionLog.fail(
+            return pkgVersionLog.fail(
                 `Could not update package.json: ${chalk.redBright(err)}`
             );
         });
@@ -82,7 +82,7 @@ const update = async () => {
             `${prevChangeLogsMD}\n# v${pkg.version}\n${changes}\n`
         )
         .catch((err) => {
-            changeLogsLog.fail(
+            return changeLogsLog.fail(
                 `Could not update changelogs.md: ${chalk.redBright(err)}`
             );
         });
@@ -102,7 +102,7 @@ const update = async () => {
     await fs
         .writeFile(changeLogsJSONDir, JSON.stringify(changeLogsJSON, null, 4))
         .catch((err) => {
-            changeLogsJSONLog.fail(
+            return changeLogsJSONLog.fail(
                 `Could not update changelogs.json: ${chalk.redBright(err)}`
             );
         });
@@ -113,7 +113,7 @@ const update = async () => {
         const denDocsLog = Ora("Generating Documentation");
         denDocsLog.start();
         await exec("npm run docs").catch((err) => {
-            denDocsLog.fail(
+            return denDocsLog.fail(
                 `Could not generate Documentation: ${chalk.redBright(err)}`
             );
         });
@@ -129,13 +129,17 @@ const update = async () => {
     /* git add */
     const gitLog = Ora("Adding files to commit").start();
     await git.add(".").catch((err) => {
-        gitLog.fail(`Could not add files to git: ${chalk.redBright(err)}`);
+        return gitLog.fail(
+            `Could not add files to git: ${chalk.redBright(err)}`
+        );
     });
 
     /* git commit */
     gitLog.text = "Committing the changes";
     await git.commit(changes).catch((err) => {
-        gitLog.fail(`Could not commit the changes: ${chalk.redBright(err)}`);
+        return gitLog.fail(
+            `Could not commit the changes: ${chalk.redBright(err)}`
+        );
     });
     gitLog.succeed("Registered the changes");
 
@@ -155,7 +159,9 @@ const update = async () => {
 
     const gitPushLog = Ora("Pushing to GitHub").start();
     await git.push().catch((err) => {
-        gitPushLog.fail(`Could not push the changes: ${chalk.redBright(err)}`);
+        return gitPushLog.fail(
+            `Could not push the changes: ${chalk.redBright(err)}`
+        );
     });
     gitPushLog.succeed("Pushed to GitHub");
 

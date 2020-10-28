@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Core/Utils/Logger | news-bot - v1.1.59</title>
+	<title>Core/Utils/Logger | news-bot - v1.1.60</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -24,7 +24,7 @@
 					</ul>
 					<ul class="results-priority" style="display:none">
 					</ul>
-					<a href="../index.html" class="title">news-bot - v1.1.59</a>
+					<a href="../index.html" class="title">news-bot - v1.1.60</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -92,6 +92,10 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="_core_utils_logger_.html#logfiler" class="tsd-kind-icon">LogFiler</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported"><a href="_core_utils_logger_.html#logsdir" class="tsd-kind-icon">LogsDir</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported"><a href="_core_utils_logger_.html#error" class="tsd-kind-icon">error</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported"><a href="_core_utils_logger_.html#info" class="tsd-kind-icon">info</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported"><a href="_core_utils_logger_.html#success" class="tsd-kind-icon">success</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported"><a href="_core_utils_logger_.html#warning" class="tsd-kind-icon">warning</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -111,7 +115,7 @@
 					<div class="tsd-signature tsd-kind-icon">Log<wbr>Filer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/Core/Utils/Logger.ts:38</li>
+							<li>Defined in src/Core/Utils/Logger.ts:42</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -129,7 +133,47 @@
 					<div class="tsd-signature tsd-kind-icon">Logs<wbr>Dir<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = path.resolve(&quot;logs&quot;,(process.env.NODE_ENV || &quot;unknown&quot;).toUpperCase(),new Date().toLocaleDateString().replace(/\//g, &quot;-&quot;))</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/Core/Utils/Logger.ts:5</li>
+							<li>Defined in src/Core/Utils/Logger.ts:9</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
+					<a name="error" class="tsd-anchor"></a>
+					<h3>error</h3>
+					<div class="tsd-signature tsd-kind-icon">error<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/Core/Utils/Logger.ts:7</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
+					<a name="info" class="tsd-anchor"></a>
+					<h3>info</h3>
+					<div class="tsd-signature tsd-kind-icon">info<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/Core/Utils/Logger.ts:7</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
+					<a name="success" class="tsd-anchor"></a>
+					<h3>success</h3>
+					<div class="tsd-signature tsd-kind-icon">success<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/Core/Utils/Logger.ts:7</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
+					<a name="warning" class="tsd-anchor"></a>
+					<h3>warning</h3>
+					<div class="tsd-signature tsd-kind-icon">warning<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/Core/Utils/Logger.ts:7</li>
 						</ul>
 					</aside>
 				</section>
@@ -142,7 +186,7 @@
 					<div class="tsd-signature tsd-kind-icon">Log<wbr>File<wbr>Dir<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/Core/Utils/Logger.ts:12</li>
+							<li>Defined in src/Core/Utils/Logger.ts:16</li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -151,17 +195,17 @@
 						<div class="tsd-signature tsd-kind-icon">debug<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;debug.log&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/Core/Utils/Logger.ts:15</li>
+								<li>Defined in src/Core/Utils/Logger.ts:19</li>
 							</ul>
 						</aside>
 					</section>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-						<a name="logfiledir.error" class="tsd-anchor"></a>
+						<a name="logfiledir.error-1" class="tsd-anchor"></a>
 						<h3>error</h3>
 						<div class="tsd-signature tsd-kind-icon">error<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;error.log&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/Core/Utils/Logger.ts:17</li>
+								<li>Defined in src/Core/Utils/Logger.ts:21</li>
 							</ul>
 						</aside>
 					</section>
@@ -171,7 +215,7 @@
 						<div class="tsd-signature tsd-kind-icon">log<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;info.log&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/Core/Utils/Logger.ts:14</li>
+								<li>Defined in src/Core/Utils/Logger.ts:18</li>
 							</ul>
 						</aside>
 					</section>
@@ -181,7 +225,7 @@
 						<div class="tsd-signature tsd-kind-icon">main<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;main.log&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/Core/Utils/Logger.ts:13</li>
+								<li>Defined in src/Core/Utils/Logger.ts:17</li>
 							</ul>
 						</aside>
 					</section>
@@ -191,7 +235,7 @@
 						<div class="tsd-signature tsd-kind-icon">warn<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;warn.log&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/Core/Utils/Logger.ts:16</li>
+								<li>Defined in src/Core/Utils/Logger.ts:20</li>
 							</ul>
 						</aside>
 					</section>
@@ -213,6 +257,18 @@
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported root">
 						<a href="_core_utils_logger_.html#logsdir" class="tsd-kind-icon">Logs<wbr>Dir</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported root">
+						<a href="_core_utils_logger_.html#error" class="tsd-kind-icon">error</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported root">
+						<a href="_core_utils_logger_.html#info" class="tsd-kind-icon">info</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported root">
+						<a href="_core_utils_logger_.html#success" class="tsd-kind-icon">success</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported root">
+						<a href="_core_utils_logger_.html#warning" class="tsd-kind-icon">warning</a>
 					</li>
 					<li class=" tsd-kind-object-literal tsd-parent-kind-module root">
 						<a href="_core_utils_logger_.html#logfiledir" class="tsd-kind-icon">Log<wbr>File<wbr>Dir</a>
