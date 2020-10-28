@@ -35,7 +35,7 @@ jobs:
                   script: |
                       const script = require(`${process.env.GITHUB_WORKSPACE}/scripts/workflow.js`);
                       const pkg = require(`${process.env.GITHUB_WORKSPACE}/package.json`);
-                      const changes = require(`${process.env.GITHUB_WORKSPACE}/data/changelogs.json`);
+                      const changes = require(`${process.env.GITHUB_WORKSPACE}/data/changelog.json`);
                       script({
                         github: github,
                         owner: context.repo.owner,

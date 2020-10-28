@@ -71,8 +71,8 @@ const update = async () => {
         ])
     ).changes;
 
-    const changeLogsLog = Ora("Writing changes to changelogs.md").start();
-    const changeLogsDir = path.resolve("changelogs.md");
+    const changeLogsLog = Ora("Writing changes to changelog.md").start();
+    const changeLogsDir = path.resolve("changelog.md");
     await fs.ensureFile(changeLogsDir);
 
     const prevChangeLogsMD = await fs.readFile(changeLogsDir);
@@ -83,14 +83,14 @@ const update = async () => {
         )
         .catch((err) => {
             return changeLogsLog.fail(
-                `Could not update changelogs.md: ${chalk.redBright(err)}`
+                `Could not update changelog.md: ${chalk.redBright(err)}`
             );
         });
-    changeLogsLog.succeed("Updated changelogs.md");
+    changeLogsLog.succeed("Updated changelog.md");
 
     /* Changelogs JSON */
-    const changeLogsJSONLog = Ora("Writing changes to changelogs.json").start();
-    const changeLogsJSONDir = path.resolve("data", "changelogs.json");
+    const changeLogsJSONLog = Ora("Writing changes to changelog.json").start();
+    const changeLogsJSONDir = path.resolve("data", "changelog.json");
     await fs.ensureFile(changeLogsJSONDir);
     let changeLogsJSON = fs.readFileSync(changeLogsJSONDir).toString();
     changeLogsJSON = changeLogsJSON.length ? JSON.parse(changeLogsJSON) : {};
@@ -103,10 +103,10 @@ const update = async () => {
         .writeFile(changeLogsJSONDir, JSON.stringify(changeLogsJSON, null, 4))
         .catch((err) => {
             return changeLogsJSONLog.fail(
-                `Could not update changelogs.json: ${chalk.redBright(err)}`
+                `Could not update changelog.json: ${chalk.redBright(err)}`
             );
         });
-    changeLogsJSONLog.succeed("Updated changelogs.json");
+    changeLogsJSONLog.succeed("Updated changelog.json");
 
     /* Generate Docs */
     if (!process.argv.includes("--no-docs")) {

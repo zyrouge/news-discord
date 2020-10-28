@@ -150,3 +150,7 @@
 
 # v1.1.64
 * Small change in Workflow
+
+# v1.1.65
+* `Changelogs.md` -> `Changelog.md`
+* `Changelogs.json` -> `Changelog.json`

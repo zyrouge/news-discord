@@ -7,9 +7,9 @@
 -   Feel free to contribute this project
 -   Commercial Usage is highly discouraged
 
-## Changelogs
+## Changelog
 
-[Click here](changelogs.md)
+[Click here](changelog.md)
 
 ## Requirements
 
