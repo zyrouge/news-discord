@@ -1,6 +1,6 @@
 {
 	"id": 0,
-	"name": "news-bot - v1.1.65",
+	"name": "news-bot - v1.1.67",
 	"kind": 0,
 	"flags": {},
 	"originalName": "",
@@ -60064,7 +60064,7 @@
 					"sources": [
 						{
 							"fileName": "src/index.ts",
-							"line": 26,
+							"line": 27,
 							"character": 10
 						}
 					],
@@ -60086,7 +60086,7 @@
 					"sources": [
 						{
 							"fileName": "src/index.ts",
-							"line": 23,
+							"line": 24,
 							"character": 12
 						}
 					],
@@ -60127,7 +60127,7 @@
 					"sources": [
 						{
 							"fileName": "src/index.ts",
-							"line": 43,
+							"line": 44,
 							"character": 10
 						}
 					]

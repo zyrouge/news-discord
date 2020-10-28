@@ -117,10 +117,10 @@ export class Client {
     }
 
     async finalize() {
-        await this.bot.connect();
         await this.Database.connect();
         await this.NewsManager.Bing.headlines();
         await this.CronJobs.start();
+        await this.bot.connect();
         return;
     }
 

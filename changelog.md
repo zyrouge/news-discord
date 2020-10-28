@@ -157,3 +157,6 @@
 
 # v1.1.66
 * Set `private` in `package.json`
+
+# v1.1.67
+* No more `Igniter` (RIP 2020-2020)
