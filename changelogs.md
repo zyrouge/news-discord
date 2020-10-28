@@ -147,3 +147,6 @@
 
 # v1.1.63
 * Changed LICENSE `GPL-3.0+` to `GPL-3.0`
+
+# v1.1.64
+* Small change in Workflow
