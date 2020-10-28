@@ -140,3 +140,7 @@
 # v1.1.61
 * Minor changes in Logger
 * QoL
+
+# v1.1.62
+* Removed `copyfiles`
+* Changed `license` in `package.json`

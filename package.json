@@ -1,6 +1,6 @@
 {
     "name": "news-bot",
-    "version": "1.1.61",
+    "version": "1.1.62",
     "description": "",
     "main": "./build/index.js",
     "types": "./src/types.d.ts",
@@ -17,7 +17,7 @@
         "url": "git+https://github.com/zyrouge/news-discord.git"
     },
     "author": "ZYROUGE",
-    "license": "MIT",
+    "license": "GPL-3.0+",
     "bugs": {
         "url": "https://github.com/zyrouge/news-discord/issues"
     },
@@ -45,7 +45,6 @@
         "@types/lodash": "^4.14.162",
         "@types/node": "^14.11.2",
         "@types/turndown": "^5.0.0",
-        "copyfiles": "^2.4.0",
         "inquirer": "^7.3.3",
         "semver": "^7.3.2",
         "ora": "^5.1.0",
